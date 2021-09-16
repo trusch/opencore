@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package catalog;
+
+import "google/protobuf/timestamp.proto";
+
+/* RESOURCES */
+
+service Resources {
+  rpc Create(CreateResourceRequest) returns (Resource);
+  rpc Get(GetResourceRequest) returns (Resource);
+  rpc Update(UpdateResourceRequest) returns (Resource);
+  rpc Delete(DeleteResourceRequest) returns (Resource);
+  rpc List(ListResourcesRequest) returns (stream Resource);
+}
+
+message Resource {
+  string id = 1;
+  string parent_id = 2;
+  string permission_parent_id = 3;
+  string creator_id = 4;
+  string kind = 5;
+  string data = 6;
+  map<string,string> labels = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+message CreateResourceRequest {
+  string kind = 1;
+  string parent_id = 2;
+  string permission_parent_id = 3;
+  string data = 4;
+  map<string,string> labels = 5;
+  repeated ShareRequest shares = 6;
+}
+
+message GetResourceRequest {
+  string id = 1;
+}
+
+message DeleteResourceRequest {
+  string id = 1;
+}
+
+message UpdateResourceRequest {
+  string id = 1;
+  string data = 2;
+  map<string,string> labels = 3;
+}
+
+message ListResourcesRequest {
+  map<string,string> labels = 1;
+  string filter = 2;
+  uint64 skip = 3;
+  string kind = 4;
+  string query = 5;
+}
+
+/* SCHEMAS */
+
+service Schemas {
+  rpc Create(CreateSchemaRequest) returns (Schema);
+  rpc Get(GetSchemaRequest) returns (Schema);
+  rpc Update(UpdateSchemaRequest) returns (Schema);
+  rpc Delete(DeleteSchemaRequest) returns (Schema);
+  rpc List(ListSchemasRequest) returns (stream Schema);
+}
+
+message Schema {
+  string id = 1;
+  string kind = 2;
+  string data = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message CreateSchemaRequest {
+  string kind = 1;
+  string data = 2;
+}
+
+message GetSchemaRequest {
+  string id = 1;
+}
+
+message DeleteSchemaRequest {
+  string id = 1;
+}
+
+message UpdateSchemaRequest {
+  string id = 1;
+  string data = 2;
+}
+
+message ListSchemasRequest {
+  string filter = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+}
+
+/* PERMISSIONS */
+
+service Permissions {
+  rpc Share(ShareRequest) returns (PermissionInfo);
+  rpc Unshare(UnshareRequest) returns (PermissionInfo);
+  rpc Get(GetPermissionInfoRequest) returns (PermissionInfo);
+  rpc List(ListPermissionsRequest) returns (stream PermissionInfo);
+  rpc Check(PermissionCheckRequest) returns (PermissionCheckResponse);
+}
+
+message PermissionCheckRequest {
+  string resource_id = 1;
+  string principal_id = 2;
+  string action = 3;
+}
+
+message PermissionCheckResponse {
+  bool granted = 1;
+}
+
+
+message ShareRequest {
+  string resource_id = 1;
+  string principal_id = 2;
+  repeated string actions = 3; 
+}
+
+message UnshareRequest {
+  string resource_id = 1;
+  string principal_id = 2;
+  repeated string actions = 3; 
+}
+
+message PermissionInfo {
+  string resource_id = 1;
+  string principal_id = 2;
+  repeated string actions = 3; 
+}
+
+message GetPermissionInfoRequest {
+  string resource_id = 1;
+  string principal_id = 2;
+}
+
+message ListPermissionsRequest {
+  string resource_id = 1;
+}
+
+/* EVENTS */
+
+service Events {
+  rpc Publish(PublishRequest) returns (Event);
+  rpc Subscribe(SubscribeRequest) returns (stream Event);
+}
+
+enum EventType {
+  NONE = 0;
+  CREATE = 1;
+  UPDATE = 2;
+  DELETE = 3;
+}
+
+message Event {
+  string id = 1;
+  string resource_id = 2;
+  string resource_kind = 3;
+  map<string,string> resource_labels = 4;
+  EventType event_type = 5;
+  string data = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message PublishRequest {
+  string resource_id = 1;
+  string resource_kind = 2;
+  EventType event_type = 3;
+  string data = 4;
+  map<string,string> labels = 5;
+}
+
+message SubscribeRequest {
+  string resource_id = 1;
+  string resource_kind = 2;
+  EventType event_type = 3;
+}
+
+/* LOCKING */
+
+service Locks {
+  rpc Lock(LockRequest) returns (stream LockResponse);
+  rpc TryLock(LockRequest) returns (stream LockResponse);
+}
+
+message LockRequest {
+  string lock_id = 1;
+}
+
+message LockResponse {
+  string lock_id = 1;
+}

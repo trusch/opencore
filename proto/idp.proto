@@ -1,0 +1,197 @@
+syntax = "proto3";
+
+package idp;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// USERS
+
+service Users {
+  rpc Create(CreateUserRequest) returns (User);
+  rpc Get(GetUserRequest) returns (User);
+  rpc Update(UpdateUserRequest) returns (User);
+  rpc Delete(DeleteUserRequest) returns (User);
+  rpc List(ListUsersRequest) returns (stream User);
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  bool is_admin = 4;
+  string password_hash = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  bool is_admin = 4;
+}
+
+message GetUserRequest {
+  string id = 1;
+  string email = 2;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message ListUsersRequest {
+  string filter = 1;
+}
+
+// SERVICE ACCOUNTS
+
+service ServiceAccounts {
+  rpc Create(CreateServiceAccountRequest) returns (CreateServiceAccountResponse);
+  rpc Get(GetServiceAccountRequest) returns (ServiceAccount);
+  rpc Update(UpdateServiceAccountRequest) returns (UpdateServiceAccountResponse);
+  rpc Delete(DeleteServiceAccountRequest) returns (ServiceAccount);
+  rpc List(ListServiceAccountsRequest) returns (stream ServiceAccount);
+}
+
+message ServiceAccount {
+  string id = 1;
+  string name = 2;
+  string secret_key_hash = 3;
+  bool is_admin = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CreateServiceAccountRequest {
+  string name = 1;
+  bool is_admin = 2;
+}
+
+message CreateServiceAccountResponse {
+  string id = 1;
+  string name = 2;
+  string secret_key = 3;
+  bool is_admin = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message GetServiceAccountRequest {
+  string id = 1;
+}
+
+message DeleteServiceAccountRequest {
+  string id = 1;
+}
+
+message UpdateServiceAccountRequest {
+  string id = 1;
+}
+
+message UpdateServiceAccountResponse {
+  string id = 1;
+  string name = 2;
+  string secret_key = 3;
+  bool is_admin = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message ListServiceAccountsRequest {}
+
+// AUTHENTICATION
+
+service Authentication {
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Refresh(RefreshRequest) returns (LoginResponse);
+}
+
+message LoginRequest {
+  string email = 1;
+  string service_account_id = 2;
+  string password = 3;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message RefreshRequest {
+  string refresh_token = 1; 
+}
+
+// GROUPS
+
+service Groups {
+  rpc Create(CreateGroupRequest) returns (Group);
+  rpc Get(GetGroupRequest) returns (Group);
+  rpc Update(UpdateGroupRequest) returns (Group);
+  rpc Delete(DeleteGroupRequest) returns (Group);
+  rpc List(ListGroupsRequest) returns (stream Group);
+  rpc AddUser(AddUserToGroupRequest) returns (google.protobuf.Empty);
+  rpc DelUser(DelUserFromGroupRequest) returns (google.protobuf.Empty);
+  rpc ListMembers(ListGroupMembersRequest) returns (stream GroupMember);
+}
+
+message Group {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message CreateGroupRequest {
+  string name = 1;
+}
+
+message GetGroupRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message DeleteGroupRequest {
+  string id = 1;
+}
+
+message UpdateGroupRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message ListGroupsRequest {
+  string filter = 1;
+}
+
+message AddUserToGroupRequest {
+  string user_id = 1;
+  string group_id = 2;
+  bool is_admin = 3;
+}
+
+message DelUserFromGroupRequest {
+  string user_id = 1;
+  string group_id = 2;
+}
+
+message GroupMember {
+  string user_id = 1;
+  string user_name = 2;
+  string user_email = 3;
+  bool is_admin = 4;
+  google.protobuf.Timestamp joined_at = 5;
+
+}
+
+message ListGroupMembersRequest {
+  string group_id = 1;
+}

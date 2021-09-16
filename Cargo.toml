@@ -1,0 +1,45 @@
+[package]
+name = "opencore"
+authors = ["Tino Rusch <tino.rusch@gmail.com>"]
+version = "0.1.0"
+edition = "2018"
+
+[[bin]] # Bin to run the catalog gRPC server
+name = "opencore"
+path = "src/main.rs"
+
+[dependencies]
+async-stream = "0.3"
+tonic = "0.5"
+tonic-web = "0.1"
+prost = "0.8"
+prost-types = "0.8"
+pwhash = "1"
+rand = "0.8"
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "uuid", "json", "chrono" ] }
+sqlx-core = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "uuid", "json", "chrono" ] }
+futures = { version = "0.3", default-features = false, features = ["alloc"] }
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tokio-stream = "*"
+uuid = { version = "0.8", features = ["v4", "v5"] }
+chrono = { version = "0.4", features = ["serde"] }
+serde_json = "1.0"
+json-patch = "*"
+jsonwebtoken = "7"
+serde = {version = "1.0", features = ["derive"] }
+jsonschema = "0.6"
+flo_stream = "0.6"
+clap = "3.0.0-beta.2"
+lazy_static = "1.4"
+tonic-reflection = "0.2"
+log = "0.4"
+env_logger = "0.8"
+sea-query = { version = "^0", features = ["with-json", "with-uuid", "sqlx-postgres"] }
+tracing = "0.1"
+tracing-subscriber = "0.2"
+tracing-opentelemetry = "0.15"
+opentelemetry = { version = "*", features = ["rt-tokio"] }
+opentelemetry-jaeger = { version = "*", features = ["rt-tokio", "collector_client", "reqwest_collector_client"] }
+
+[build-dependencies]
+tonic-build = "0.5"
