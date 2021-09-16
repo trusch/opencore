@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+  margin: 3%;
+  vertical-align: middle;
+}
+
+.ListItem {
+  text-align: left;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+img {
+  margin: 1%;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
