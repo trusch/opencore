@@ -29,10 +29,7 @@ impl Service {
         mgr: Arc<managers::resources::Manager>,
         validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
-        let res = Service {
-            mgr,
-            validator,
-        };
+        let res = Service { mgr, validator };
         Ok(res)
     }
 }
@@ -63,18 +60,15 @@ impl Resources for Service {
         }
         let res = self
             .mgr
-            .create(
-                crate::managers::resources::CreateOptions {
-                    claims: &claims,
-                    kind: &request.get_ref().kind,
-                    parent_id,
-                    permission_parent_id,
-                    data: &data,
-                    labels: &request.get_ref().labels,
-                    shares: &request.get_ref().shares,
-                },
-                
-            )
+            .create(crate::managers::resources::CreateOptions {
+                claims: &claims,
+                kind: &request.get_ref().kind,
+                parent_id,
+                permission_parent_id,
+                data: &data,
+                labels: &request.get_ref().labels,
+                shares: &request.get_ref().shares,
+            })
             .await?;
         Ok(Response::new(res))
     }
@@ -110,10 +104,7 @@ impl Resources for Service {
         let id = Self::parse_uuid(&request.get_ref().id)?;
         let patch_object = Self::parse_json(&request.get_ref().data)?;
         let labels = &request.get_ref().labels;
-        let result = self
-            .mgr
-            .update(&claims, &id, &patch_object, labels)
-            .await?;
+        let result = self.mgr.update(&claims, &id, &patch_object, labels).await?;
         Ok(Response::new(result))
     }
 

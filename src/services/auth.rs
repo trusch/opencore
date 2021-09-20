@@ -114,11 +114,7 @@ impl Authentication for Service {
             }
         };
 
-        match self
-            .user_manager
-            .get(users::GetSelector::ById(id))
-            .await
-        {
+        match self.user_manager.get(users::GetSelector::ById(id)).await {
             Ok(user) => {
                 let grps = self
                     .group_manager

@@ -202,7 +202,11 @@ impl Manager {
 
         let now = chrono::Utc::now();
 
-        let email = if !email.is_empty() { email } else { &user.email };
+        let email = if !email.is_empty() {
+            email
+        } else {
+            &user.email
+        };
         let name = if !name.is_empty() { name } else { &user.name };
         let password_hash = if !password.is_empty() {
             bcrypt::hash(password).unwrap()

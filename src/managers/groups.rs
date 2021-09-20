@@ -41,10 +41,7 @@ impl Manager {
         pool: Arc<sqlx::PgPool>,
         users_mgr: Arc<managers::users::Manager>,
     ) -> Result<Manager, sqlx::Error> {
-        let res = Manager {
-            pool,
-            users_mgr,
-        };
+        let res = Manager { pool, users_mgr };
         res.init_tables().await?;
         Ok(res)
     }

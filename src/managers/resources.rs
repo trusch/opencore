@@ -37,11 +37,7 @@ impl From<ResourceRow> for Resource {
         Resource {
             id: r.resource_id.to_hyphenated().to_string(),
             kind: r.kind,
-            parent_id: r
-                .parent_id
-                .unwrap_or_default()
-                .to_hyphenated()
-                .to_string(),
+            parent_id: r.parent_id.unwrap_or_default().to_hyphenated().to_string(),
             permission_parent_id: r
                 .permission_parent_id
                 .unwrap_or_default()
@@ -146,20 +142,12 @@ impl Manager {
     }
 
     #[tracing::instrument(name = "mgr::resources::create", skip(self))]
-    pub async fn create(
-        &self,
-        opts : CreateOptions<'_>,
-    ) -> Result<Resource, Error> {
+    pub async fn create(&self, opts: CreateOptions<'_>) -> Result<Resource, Error> {
         let mut tx = self.pool.begin().await?;
 
         let data = opts.data.to_owned();
 
-        let res = self
-            .create_with_tx(
-                opts,
-                &mut tx,
-            )
-            .await?;
+        let res = self.create_with_tx(opts, &mut tx).await?;
 
         tx.commit().await?;
 
@@ -180,7 +168,7 @@ impl Manager {
     #[tracing::instrument(name = "mgr::resources::create_with_tx", skip(self))]
     pub async fn create_with_tx(
         &self,
-        opts : CreateOptions<'_>,
+        opts: CreateOptions<'_>,
         tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     ) -> Result<Resource, Error> {
         self.schemas.validate(opts.kind, opts.data).await?;
@@ -193,11 +181,13 @@ impl Manager {
 
         let res = Resource {
             id: resource_id.to_hyphenated().to_string(),
-            parent_id: opts.parent_id
+            parent_id: opts
+                .parent_id
                 .unwrap_or(&resource_id)
                 .to_hyphenated()
                 .to_string(),
-            permission_parent_id: opts.permission_parent_id
+            permission_parent_id: opts
+                .permission_parent_id
                 .unwrap_or(&resource_id)
                 .to_hyphenated()
                 .to_string(),
@@ -475,9 +465,7 @@ impl Manager {
 
             if !kind.is_empty() {
                 query = query
-                    .and_where(
-                        Expr::tbl(ResourcesTable::Table, ResourcesTable::Kind).eq(kind),
-                    )
+                    .and_where(Expr::tbl(ResourcesTable::Table, ResourcesTable::Kind).eq(kind))
                     .to_owned();
             }
 
@@ -545,12 +533,8 @@ impl Manager {
                     .instrument(tracing::debug_span!("close transaction"))
                     .await
                 {
-                    Ok(_) => {
-                        Ok(())
-                    }
-                    Err(_) => {
-                        Err(())
-                    }
+                    Ok(_) => Ok(()),
+                    Err(_) => Err(()),
                 }
             }
             .instrument(span),
