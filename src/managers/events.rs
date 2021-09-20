@@ -61,9 +61,9 @@ pub struct Manager {
 
 #[derive(Debug, Clone)]
 pub enum SubscribeFilter {
-    ByType(catalog::EventType),
-    ByKind(String),
-    ByResource(String),
+    Type(catalog::EventType),
+    Kind(String),
+    Resource(String),
 }
 
 impl std::fmt::Debug for Manager {
@@ -170,7 +170,7 @@ impl Manager {
         &self,
         claims: &Claims,
         resource_id: &Uuid,
-        resource_kind: &String,
+        resource_kind: &str,
         resource_labels: &HashMap<String, String>,
         event_type: catalog::EventType,
         data: &serde_json::Value,
@@ -224,7 +224,7 @@ impl Manager {
         Ok(Event {
             id: event_id.to_hyphenated().to_string(),
             resource_id: resource_id.to_hyphenated().to_string(),
-            resource_kind: resource_kind.clone(),
+            resource_kind: resource_kind.to_string(),
             resource_labels: resource_labels.clone(),
             event_type: event_type as i32,
             data: serde_json::to_string(data)?,
@@ -239,7 +239,7 @@ impl Manager {
     pub async fn subscribe(
         &self,
         claims: &Claims,
-        filters: &Vec<SubscribeFilter>,
+        filters: &[SubscribeFilter],
     ) -> Result<
         Pin<Box<impl Stream<Item = Result<Event, tonic::Status>> + Send + Sync + 'static>>,
         tonic::Status,
@@ -291,17 +291,17 @@ impl Manager {
 
                     for filter in filters.iter() {
                         match filter {
-                            SubscribeFilter::ByResource(id) => {
+                            SubscribeFilter::Resource(id) => {
                                 if event.resource_id != *id {
                                     continue 'mainloop;
                                 }
                             }
-                            SubscribeFilter::ByKind(kind) => {
+                            SubscribeFilter::Kind(kind) => {
                                 if event.resource_kind != *kind {
                                     continue 'mainloop;
                                 }
                             }
-                            SubscribeFilter::ByType(event_type) => {
+                            SubscribeFilter::Type(event_type) => {
                                 let t = catalog::EventType::from(event.event_type);
                                 if t != *event_type {
                                     continue 'mainloop;

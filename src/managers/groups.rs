@@ -42,8 +42,8 @@ impl Manager {
         users_mgr: Arc<managers::users::Manager>,
     ) -> Result<Manager, sqlx::Error> {
         let res = Manager {
-            pool: pool,
-            users_mgr: users_mgr,
+            pool,
+            users_mgr,
         };
         res.init_tables().await?;
         Ok(res)
@@ -79,8 +79,8 @@ impl Manager {
     }
 
     #[tracing::instrument(name = "mgr::groups::create", skip(self))]
-    pub async fn create(&self, claims: &token::Claims, name: &String) -> Result<Group, Status> {
-        let id = Uuid::new_v5(&Uuid::NAMESPACE_OID, &name.as_bytes());
+    pub async fn create(&self, claims: &token::Claims, name: &str) -> Result<Group, Status> {
+        let id = Uuid::new_v5(&Uuid::NAMESPACE_OID, name.as_bytes());
         let now = chrono::Utc::now();
 
         let requester_id = match Uuid::parse_str(&claims.sub) {
@@ -95,7 +95,7 @@ impl Manager {
 
         let res = Group {
             id: id.to_hyphenated().to_string(),
-            name: name.clone(),
+            name: name.to_string(),
             created_at: Some(prost_types::Timestamp {
                 seconds: now.timestamp(),
                 nanos: 0,
@@ -223,7 +223,7 @@ impl Manager {
         &self,
         claims: &token::Claims,
         id: &Uuid,
-        name: &String,
+        name: &str,
     ) -> Result<Group, Status> {
         if !claims.adm {
             let row = match sqlx::query(
@@ -266,7 +266,7 @@ impl Manager {
             }
         }
 
-        group.name = name.clone();
+        group.name = name.to_string();
         group.updated_at = Some(prost_types::Timestamp {
             seconds: now.timestamp(),
             nanos: 0,
@@ -544,7 +544,7 @@ impl Manager {
         let (tx, rx) = mpsc::channel(4);
 
         let pool = self.pool.clone();
-        let group_id = group_id.clone();
+        let group_id = *group_id;
 
         tokio::spawn(async move {
             let mut rows = sqlx::query_as("SELECT id, name, email, group_members.is_admin, group_members.created_at AS joined_at FROM users LEFT JOIN group_members ON(users.id = group_members.user_id) WHERE group_members.group_id = $1")

@@ -33,7 +33,7 @@ impl Claims {
         Ok(res)
     }
 
-    pub fn has_group(&self, grp: &String) -> bool {
-        self.grp.contains(grp)
+    pub fn has_group(&self, grp: &str) -> bool {
+        self.grp.contains(&grp.to_string())
     }
 }

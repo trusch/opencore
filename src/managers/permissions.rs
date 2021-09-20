@@ -27,7 +27,7 @@ struct PermissionInfoRow {
 
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, Error> {
-        let res = Manager { pool: pool };
+        let res = Manager { pool };
         res.init_tables().await?;
         Ok(res)
     }
@@ -64,11 +64,11 @@ impl Manager {
         claims: &Claims,
         resource_id: &Uuid,
         principal_id: &Uuid,
-        actions: &Vec<String>,
+        actions: &[String],
     ) -> Result<PermissionInfo, Error> {
         self.check(resource_id, "grant", claims).await?;
 
-        for action in actions.into_iter() {
+        for action in actions.iter() {
             sqlx::query(
                 r#"INSERT INTO 
                     permissions(resource_id, principal_id, action) 
@@ -91,11 +91,11 @@ impl Manager {
         claims: &Claims,
         resource_id: &Uuid,
         principal_id: &Uuid,
-        actions: &Vec<String>,
+        actions: &[String],
     ) -> Result<PermissionInfo, Error> {
         self.check_with_tx(tx, resource_id, "grant", claims).await?;
 
-        for action in actions.into_iter() {
+        for action in actions.iter() {
             sqlx::query(
                 r#"INSERT INTO 
                     permissions(resource_id, principal_id, action) 
@@ -118,7 +118,7 @@ impl Manager {
         claims: &Claims,
         resource_id: &Uuid,
         principal_id: &Uuid,
-        actions: &Vec<String>,
+        actions: &[String],
     ) -> Result<PermissionInfo, Error> {
         self.check(resource_id, "grant", claims).await?;
 
@@ -313,7 +313,7 @@ impl Manager {
         log::info!("list call authorized");
         let (tx, rx) = mpsc::channel(4);
         let pool = self.pool.clone();
-        let resource_id = resource_id.clone();
+        let resource_id = *resource_id;
         tokio::spawn(async move {
             let mut rows = sqlx::query_as(
                 r#"SELECT resources.resource_id, principal_id, array_agg(action) as actions

@@ -37,7 +37,7 @@ pub struct Manager {
 
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, sqlx::Error> {
-        let res = Manager { pool: pool };
+        let res = Manager { pool };
         res.init_tables().await?;
         Ok(res)
     }
@@ -121,7 +121,7 @@ impl Manager {
         match selector {
             GetSelector::ByEmail(email) => {
                 filter = "email = $1".into();
-                argument = email.into();
+                argument = email;
             }
             GetSelector::ById(id) => {
                 filter = "id::TEXT = $1".into();
@@ -167,7 +167,7 @@ impl Manager {
             return Err(Status::permission_denied("only admins can delete users"));
         }
 
-        let res = self.get(GetSelector::ById(id.clone())).await?;
+        let res = self.get(GetSelector::ById(*id)).await?;
 
         match sqlx::query("DELETE FROM Users WHERE id = $1")
             .bind(&id)
@@ -198,13 +198,13 @@ impl Manager {
             ));
         }
 
-        let mut user = self.get(GetSelector::ById(id.clone())).await?;
+        let mut user = self.get(GetSelector::ById(*id)).await?;
 
         let now = chrono::Utc::now();
 
-        let email = if email != "" { email } else { &user.email };
-        let name = if name != "" { name } else { &user.name };
-        let password_hash = if password != "" {
+        let email = if !email.is_empty() { email } else { &user.email };
+        let name = if !name.is_empty() { name } else { &user.name };
+        let password_hash = if !password.is_empty() {
             bcrypt::hash(password).unwrap()
         } else {
             user.password_hash.clone()

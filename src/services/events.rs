@@ -67,19 +67,19 @@ impl Events for Service {
         use managers::events::SubscribeFilter;
 
         let resource_id = &request.get_ref().resource_id;
-        if resource_id != "" {
-            filters.push(SubscribeFilter::ByResource(resource_id.to_string()));
+        if !resource_id.is_empty() {
+            filters.push(SubscribeFilter::Resource(resource_id.to_string()));
         }
 
         let kind = &request.get_ref().resource_kind;
-        if kind != "" {
-            filters.push(SubscribeFilter::ByKind(kind.to_string()));
+        if !kind.is_empty() {
+            filters.push(SubscribeFilter::Kind(kind.to_string()));
         }
 
         let event_type = EventType::from(request.get_ref().event_type);
         if event_type != EventType::None {
             log::info!("filter by event type {:?}", event_type);
-            filters.push(SubscribeFilter::ByType(event_type));
+            filters.push(SubscribeFilter::Type(event_type));
         }
 
         let stream = self.manager.subscribe(&claims, &filters).await?;

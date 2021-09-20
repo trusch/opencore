@@ -30,7 +30,7 @@ pub struct Manager {
 
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, sqlx::Error> {
-        let res = Manager { pool: pool };
+        let res = Manager { pool };
         res.init_tables().await?;
         Ok(res)
     }
@@ -75,7 +75,7 @@ impl Manager {
         let sa = ServiceAccount {
             id: id.to_hyphenated().to_string(),
             name: name.to_string(),
-            is_admin: is_admin,
+            is_admin,
             secret_key_hash: bcrypt::hash(&password).unwrap(),
             created_at: Some(prost_types::Timestamp {
                 seconds: now.timestamp(),

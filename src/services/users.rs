@@ -30,8 +30,8 @@ impl Service {
         validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
         let res = Service {
-            mgr: mgr,
-            validator: validator,
+            mgr,
+            validator,
         };
         Ok(res)
     }
@@ -51,10 +51,10 @@ impl Users for Service {
 
         let r = request.get_ref();
 
-        if r.name == "" {
+        if r.name.is_empty() {
             return Err(Status::invalid_argument("'name' must be specified"));
         }
-        if r.email == "" {
+        if r.email.is_empty() {
             return Err(Status::invalid_argument("'email' must be specified"));
         }
         if r.password.len() < 8 {
@@ -74,11 +74,11 @@ impl Users for Service {
     async fn get(&self, request: Request<GetUserRequest>) -> Result<Response<User>, Status> {
         let r = request.get_ref();
         let selector = match () {
-            _ if r.id != "" => {
+            _ if !r.id.is_empty() => {
                 let user_id = Self::parse_uuid(&request.get_ref().id)?;
                 managers::users::GetSelector::ById(user_id)
             }
-            _ if r.email != "" => managers::users::GetSelector::ByEmail(r.email.clone()),
+            _ if !r.email.is_empty() => managers::users::GetSelector::ByEmail(r.email.clone()),
             _ => {
                 return Err(Status::invalid_argument(
                     "you need to supply 'id' or 'email'",
@@ -118,7 +118,7 @@ impl Users for Service {
             ));
         }
 
-        if r.password != "" && r.password.len() < 8 {
+        if !r.password.is_empty() && r.password.len() < 8 {
             return Err(Status::invalid_argument(
                 "'password' must be at least 8 byte long",
             ));

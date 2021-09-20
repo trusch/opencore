@@ -27,8 +27,8 @@ impl Service {
         validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
         let res = Service {
-            mgr: mgr,
-            validator: validator,
+            mgr,
+            validator,
         };
         Ok(res)
     }
@@ -70,7 +70,7 @@ impl ServiceAccounts for Service {
 
         let service_account_id = match Uuid::parse_str(&request.get_ref().id) {
             Ok(id) => id,
-            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, &request.get_ref().id.as_bytes()),
+            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
 
         let res = self.mgr.get(&claims, &service_account_id).await?;
@@ -93,7 +93,7 @@ impl ServiceAccounts for Service {
 
         let id = match Uuid::parse_str(&request.get_ref().id) {
             Ok(id) => id,
-            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, &request.get_ref().id.as_bytes()),
+            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
 
         let res = self.mgr.delete(&claims, &id).await?;
@@ -117,7 +117,7 @@ impl ServiceAccounts for Service {
         let r = request.get_ref();
         let id = match Uuid::parse_str(&r.id) {
             Ok(id) => id,
-            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, &request.get_ref().id.as_bytes()),
+            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
 
         let result = self.mgr.update(&claims, &id).await?;

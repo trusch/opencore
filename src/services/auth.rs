@@ -38,7 +38,7 @@ impl Authentication for Service {
         &self,
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
-        if request.get_ref().email != "" {
+        if !request.get_ref().email.is_empty() {
             // get user
             let user = self
                 .user_manager
@@ -66,7 +66,7 @@ impl Authentication for Service {
                 .await?
                 .iter()
                 .map(|grp| grp.id.clone())
-                .collect();
+                .collect::<Vec<String>>();
 
             // generate and return token
             Ok(Response::new(LoginResponse {
@@ -88,8 +88,8 @@ impl Authentication for Service {
                 .await?;
             // generate and return token
             Ok(Response::new(LoginResponse {
-                access_token: self.create_token(&sa.id, sa.is_admin, &vec![], false)?,
-                refresh_token: self.create_token(&sa.id, sa.is_admin, &vec![], true)?,
+                access_token: self.create_token(&sa.id, sa.is_admin, &[], false)?,
+                refresh_token: self.create_token(&sa.id, sa.is_admin, &[], true)?,
             }))
         }
     }
@@ -116,7 +116,7 @@ impl Authentication for Service {
 
         match self
             .user_manager
-            .get(users::GetSelector::ById(id.clone()))
+            .get(users::GetSelector::ById(id))
             .await
         {
             Ok(user) => {
@@ -126,7 +126,7 @@ impl Authentication for Service {
                     .await?
                     .iter()
                     .map(|grp| grp.id.clone())
-                    .collect();
+                    .collect::<Vec<String>>();
                 Ok(Response::new(LoginResponse {
                     access_token: self.create_token(&user.id, user.is_admin, &grps, false)?,
                     refresh_token: self.create_token(&user.id, user.is_admin, &grps, true)?,
@@ -138,8 +138,8 @@ impl Authentication for Service {
                     .get(&Claims::admin(), &id)
                     .await?;
                 Ok(Response::new(LoginResponse {
-                    access_token: self.create_token(&sa.id, sa.is_admin, &vec![], false)?,
-                    refresh_token: self.create_token(&sa.id, sa.is_admin, &vec![], true)?,
+                    access_token: self.create_token(&sa.id, sa.is_admin, &[], false)?,
+                    refresh_token: self.create_token(&sa.id, sa.is_admin, &[], true)?,
                 }))
             }
         }
@@ -155,10 +155,10 @@ impl Service {
         key: &str,
     ) -> Result<Service, sqlx::Error> {
         let res = Service {
-            user_manager: user_manager,
-            group_manager: group_manager,
-            service_account_manager: service_account_manager,
-            validator: validator,
+            user_manager,
+            group_manager,
+            service_account_manager,
+            validator,
             key: key.to_string(),
         };
         Ok(res)
@@ -169,7 +169,7 @@ impl Service {
         &self,
         sub: &str,
         is_admin: bool,
-        groups: &Vec<String>,
+        groups: &[String],
         is_refresh: bool,
     ) -> Result<String, Status> {
         let mut exp = TOKEN_LIFETIME;
@@ -183,7 +183,7 @@ impl Service {
             iat: now.timestamp() as usize,
             nbf: now.timestamp() as usize,
             sub: sub.to_string(),
-            grp: groups.clone(),
+            grp: groups.to_vec(),
             adm: is_admin,
             rfs: is_refresh,
         };
@@ -191,7 +191,7 @@ impl Service {
         let token = match encode(
             &Header::default(),
             &claims,
-            &EncodingKey::from_secret(&self.key.as_ref()),
+            &EncodingKey::from_secret(self.key.as_ref()),
         ) {
             Ok(token) => token,
             Err(err) => {

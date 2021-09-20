@@ -29,8 +29,8 @@ impl Service {
         validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
         let res = Service {
-            mgr: mgr,
-            validator: validator,
+            mgr,
+            validator,
         };
         Ok(res)
     }

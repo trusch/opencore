@@ -32,32 +32,32 @@ struct ResourceRow {
     labels: serde_json::Value,
 }
 
-impl Into<Resource> for ResourceRow {
-    fn into(self) -> Resource {
+impl From<ResourceRow> for Resource {
+    fn from(r: ResourceRow) -> Resource {
         Resource {
-            id: self.resource_id.to_hyphenated().to_string(),
-            kind: self.kind,
-            parent_id: self
+            id: r.resource_id.to_hyphenated().to_string(),
+            kind: r.kind,
+            parent_id: r
                 .parent_id
                 .unwrap_or_default()
                 .to_hyphenated()
                 .to_string(),
-            permission_parent_id: self
+            permission_parent_id: r
                 .permission_parent_id
                 .unwrap_or_default()
                 .to_hyphenated()
                 .to_string(),
-            creator_id: self.creator_id.to_hyphenated().to_string(),
-            labels: serde_json::from_value(self.labels).unwrap_or_default(),
+            creator_id: r.creator_id.to_hyphenated().to_string(),
+            labels: serde_json::from_value(r.labels).unwrap_or_default(),
             created_at: Some(prost_types::Timestamp {
-                seconds: self.created_at.timestamp(),
+                seconds: r.created_at.timestamp(),
                 nanos: 0,
             }),
             updated_at: Some(prost_types::Timestamp {
-                seconds: self.updated_at.timestamp(),
+                seconds: r.updated_at.timestamp(),
                 nanos: 0,
             }),
-            data: serde_json::to_string(&self.data).unwrap_or_default(),
+            data: serde_json::to_string(&r.data).unwrap_or_default(),
         }
     }
 }
@@ -70,6 +70,17 @@ pub struct Manager {
     events: Arc<managers::events::Manager>,
 }
 
+#[derive(Debug)]
+pub struct CreateOptions<'a> {
+    pub claims: &'a Claims,
+    pub kind: &'a String,
+    pub parent_id: Option<&'a Uuid>,
+    pub permission_parent_id: Option<&'a Uuid>,
+    pub data: &'a serde_json::Value,
+    pub labels: &'a HashMap<String, String>,
+    pub shares: &'a Vec<ShareRequest>,
+}
+
 impl Manager {
     pub async fn new(
         pool: Arc<sqlx::PgPool>,
@@ -78,10 +89,10 @@ impl Manager {
         events: Arc<managers::events::Manager>,
     ) -> Result<Manager, Error> {
         let res = Manager {
-            pool: pool,
-            permissions: permissions,
-            schemas: schemas,
-            events: events,
+            pool,
+            permissions,
+            schemas,
+            events,
         };
         res.init_tables().await?;
         Ok(res)
@@ -137,25 +148,15 @@ impl Manager {
     #[tracing::instrument(name = "mgr::resources::create", skip(self))]
     pub async fn create(
         &self,
-        claims: &Claims,
-        kind: &String,
-        parent_id: Option<&Uuid>,
-        permission_parent_id: Option<&Uuid>,
-        data: &serde_json::Value,
-        labels: &HashMap<String, String>,
-        shares: &Vec<ShareRequest>,
+        opts : CreateOptions<'_>,
     ) -> Result<Resource, Error> {
         let mut tx = self.pool.begin().await?;
 
+        let data = opts.data.to_owned();
+
         let res = self
             .create_with_tx(
-                claims,
-                kind,
-                parent_id,
-                permission_parent_id,
-                data,
-                labels,
-                shares,
+                opts,
                 &mut tx,
             )
             .await?;
@@ -179,37 +180,31 @@ impl Manager {
     #[tracing::instrument(name = "mgr::resources::create_with_tx", skip(self))]
     pub async fn create_with_tx(
         &self,
-        claims: &Claims,
-        kind: &String,
-        parent_id: Option<&Uuid>,
-        permission_parent_id: Option<&Uuid>,
-        data: &serde_json::Value,
-        labels: &HashMap<String, String>,
-        shares: &Vec<ShareRequest>,
+        opts : CreateOptions<'_>,
         tx: &mut sqlx::Transaction<'_, sqlx::Postgres>,
     ) -> Result<Resource, Error> {
-        self.schemas.validate(kind, data).await?;
+        self.schemas.validate(opts.kind, opts.data).await?;
 
         let resource_id = Uuid::new_v4();
 
         let now = chrono::Utc::now();
 
-        let data_str = serde_json::to_string(data)?;
+        let data_str = serde_json::to_string(opts.data)?;
 
         let res = Resource {
             id: resource_id.to_hyphenated().to_string(),
-            parent_id: parent_id
+            parent_id: opts.parent_id
                 .unwrap_or(&resource_id)
                 .to_hyphenated()
                 .to_string(),
-            permission_parent_id: permission_parent_id
+            permission_parent_id: opts.permission_parent_id
                 .unwrap_or(&resource_id)
                 .to_hyphenated()
                 .to_string(),
-            creator_id: claims.sub.clone(),
-            kind: kind.clone(),
+            creator_id: opts.claims.sub.clone(),
+            kind: opts.kind.clone(),
             data: data_str,
-            labels: labels.clone(),
+            labels: opts.labels.clone(),
             created_at: Some(prost_types::Timestamp {
                 seconds: now.timestamp(),
                 nanos: 0,
@@ -220,24 +215,24 @@ impl Manager {
             }),
         };
 
-        let label_value = serde_json::to_value(labels)?;
+        let label_value = serde_json::to_value(opts.labels)?;
 
         sqlx::query("INSERT INTO resources(resource_id, kind, parent_id, permission_parent_id, creator_id, created_at, updated_at, data, labels) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)").
             bind(&resource_id).
             bind(&res.kind).
-            bind(parent_id.unwrap_or(&resource_id)).
-            bind(permission_parent_id.unwrap_or(&resource_id)).
+            bind(opts.parent_id.unwrap_or(&resource_id)).
+            bind(opts.permission_parent_id.unwrap_or(&resource_id)).
             bind(Uuid::parse_str(&res.creator_id)?).
             bind(now).
             bind(now).
-            bind(&data).
+            bind(opts.data).
             bind(&label_value).
             execute(&mut *tx).await?;
 
-        match permission_parent_id {
+        match opts.permission_parent_id {
             Some(_) => {}
             None => {
-                let user_id = Uuid::parse_str(&claims.sub)?;
+                let user_id = Uuid::parse_str(&opts.claims.sub)?;
                 let perms: Vec<String> = vec!["grant", "read", "write"]
                     .iter()
                     .map(|x| x.to_string())
@@ -248,10 +243,10 @@ impl Manager {
             }
         }
 
-        for share in shares.iter() {
+        for share in opts.shares.iter() {
             let principal_id = match Uuid::parse_str(&share.principal_id) {
                 Ok(val) => val,
-                Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, &share.principal_id.as_bytes()), // service accounts may be specified by name
+                Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, share.principal_id.as_bytes()), // service accounts may be specified by name
             };
             self.permissions
                 .share_with_tx(
@@ -297,7 +292,7 @@ impl Manager {
         self.events
             .publish(
                 &Claims::admin(),
-                &id,
+                id,
                 &res.kind,
                 &res.labels,
                 api::catalog::EventType::Delete,
@@ -330,10 +325,10 @@ impl Manager {
         self.schemas.validate(&resource.kind, &data).await?;
 
         let mut final_labels = resource.labels.clone();
-        if labels.len() > 0 {
+        if !labels.is_empty() {
             // empty string marks label for removal
             for (k, v) in labels.iter() {
-                if v.len() == 0 {
+                if v.is_empty() {
                     final_labels.remove(k);
                 } else {
                     final_labels.insert(k.to_string(), v.to_string());
@@ -367,7 +362,7 @@ impl Manager {
         self.events
             .publish(
                 &Claims::admin(),
-                &id,
+                id,
                 &resource.kind,
                 &resource.labels,
                 api::catalog::EventType::Update,
@@ -383,9 +378,9 @@ impl Manager {
         &self,
         claims: &Claims,
         labels: &HashMap<String, String>,
-        filter: &String,
-        kind: &String,
-        search_term: &String,
+        filter: &str,
+        kind: &str,
+        search_term: &str,
     ) -> Result<
         Pin<Box<impl Stream<Item = Result<Resource, tonic::Status>> + Send + Sync + 'static>>,
         tonic::Status,
@@ -443,7 +438,7 @@ impl Manager {
                 query = query
                     .and_where(
                         Expr::tbl(PermissionsTable::Table, PermissionsTable::PrincipalID)
-                            .is_in(principals.clone()),
+                            .is_in(principals),
                     )
                     .and_where(
                         Expr::tbl(PermissionsTable::Table, PermissionsTable::Action).eq("read"),
@@ -451,7 +446,7 @@ impl Manager {
                     .to_owned();
             }
 
-            if labels.len() > 0 {
+            if !labels.is_empty() {
                 let labels_value = match serde_json::to_value(&labels) {
                     Ok(val) => val,
                     Err(err) => {
@@ -469,28 +464,28 @@ impl Manager {
                     .to_owned();
             }
 
-            if filter != "" {
+            if !filter.is_empty() {
                 query = query
                     .and_where(Expr::cust_with_values(
                         "data @@ (?::JSONPATH)",
-                        vec![filter.as_str()],
+                        vec![filter],
                     ))
                     .to_owned();
             }
 
-            if kind != "" {
+            if !kind.is_empty() {
                 query = query
                     .and_where(
-                        Expr::tbl(ResourcesTable::Table, ResourcesTable::Kind).eq(kind.as_str()),
+                        Expr::tbl(ResourcesTable::Table, ResourcesTable::Kind).eq(kind),
                     )
                     .to_owned();
             }
 
-            if search_term != "" {
+            if !search_term.is_empty() {
                 query = query
                     .and_where(Expr::cust_with_values(
                         "data_vec @@ (websearch_to_tsquery(?))",
-                        vec![search_term.as_str()],
+                        vec![search_term],
                     ))
                     .to_owned();
             }
@@ -551,12 +546,12 @@ impl Manager {
                     .await
                 {
                     Ok(_) => {
-                        return Ok(());
+                        Ok(())
                     }
                     Err(_) => {
-                        return Err(());
+                        Err(())
                     }
-                };
+                }
             }
             .instrument(span),
         );

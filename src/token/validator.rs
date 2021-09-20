@@ -43,8 +43,8 @@ impl Validator {
         Ok(token.to_string())
     }
 
-    pub fn validate(&self, token: &String) -> Result<Claims, Error> {
-        let token_data = decode::<Claims>(&token, &self.decoding_key, &Validation::default())?;
+    pub fn validate(&self, token: &str) -> Result<Claims, Error> {
+        let token_data = decode::<Claims>(token, &self.decoding_key, &Validation::default())?;
         Ok(token_data.claims)
     }
 }

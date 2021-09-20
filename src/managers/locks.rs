@@ -18,7 +18,7 @@ pub struct Manager {
 }
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, Error> {
-        let res = Manager { pool: pool };
+        let res = Manager { pool };
         Ok(res)
     }
 
@@ -119,7 +119,7 @@ impl Manager {
             Err(err) => return Err(Status::internal(err.to_string())),
         };
 
-        if row.0 == false {
+        if !row.0 {
             return Err(Status::resource_exhausted("failed to get lock"));
         }
 

@@ -30,8 +30,8 @@ impl Service {
         validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
         let res = Service {
-            mgr: mgr,
-            validator: validator,
+            mgr,
+            validator,
         };
         Ok(res)
     }
@@ -50,27 +50,30 @@ impl Resources for Service {
 
         let parent_id_value: Uuid;
         let mut parent_id: Option<&Uuid> = None;
-        if r.parent_id != "" {
+        if !r.parent_id.is_empty() {
             parent_id_value = Self::parse_uuid(&r.parent_id)?;
             parent_id = Some(&parent_id_value);
         }
 
         let permission_parent_id_value: Uuid;
         let mut permission_parent_id: Option<&Uuid> = None;
-        if r.permission_parent_id != "" {
+        if !r.permission_parent_id.is_empty() {
             permission_parent_id_value = Self::parse_uuid(&r.permission_parent_id)?;
             permission_parent_id = Some(&permission_parent_id_value);
         }
         let res = self
             .mgr
             .create(
-                &claims,
-                &request.get_ref().kind,
-                parent_id,
-                permission_parent_id,
-                &data,
-                &request.get_ref().labels,
-                &request.get_ref().shares,
+                crate::managers::resources::CreateOptions {
+                    claims: &claims,
+                    kind: &request.get_ref().kind,
+                    parent_id,
+                    permission_parent_id,
+                    data: &data,
+                    labels: &request.get_ref().labels,
+                    shares: &request.get_ref().shares,
+                },
+                
             )
             .await?;
         Ok(Response::new(res))
@@ -109,7 +112,7 @@ impl Resources for Service {
         let labels = &request.get_ref().labels;
         let result = self
             .mgr
-            .update(&claims, &id, &patch_object, &labels)
+            .update(&claims, &id, &patch_object, labels)
             .await?;
         Ok(Response::new(result))
     }

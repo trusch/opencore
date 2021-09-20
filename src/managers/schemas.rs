@@ -28,7 +28,7 @@ pub struct Manager {
 
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, Error> {
-        let res = Manager { pool: pool };
+        let res = Manager { pool };
         res.init_tables().await?;
         Ok(res)
     }
@@ -51,7 +51,7 @@ impl Manager {
     }
 
     #[tracing::instrument(name = "mgr::schemas::create", skip(self))]
-    pub async fn create(&self, kind: &String, data: &serde_json::Value) -> Result<Schema, Error> {
+    pub async fn create(&self, kind: &str, data: &serde_json::Value) -> Result<Schema, Error> {
         let id = Uuid::new_v4();
 
         let now = chrono::Utc::now();
@@ -68,7 +68,7 @@ impl Manager {
 
         let res = Schema {
             id: id.to_hyphenated().to_string(),
-            kind: kind.clone(),
+            kind: kind.to_string(),
             data: data_bytes,
             created_at: Some(prost_types::Timestamp {
                 seconds: now.timestamp(),
@@ -126,7 +126,7 @@ impl Manager {
         let res = Schema {
             id: row.id.to_hyphenated().to_string(),
             kind: row.kind,
-            data: data,
+            data,
             created_at: Some(prost_types::Timestamp {
                 seconds: row.created_at.timestamp(),
                 nanos: 0,
@@ -242,7 +242,7 @@ impl Manager {
                 let res = Schema {
                     id: row.id.to_hyphenated().to_string(),
                     kind: row.kind,
-                    data: data,
+                    data,
                     created_at: Some(prost_types::Timestamp {
                         seconds: row.created_at.timestamp(),
                         nanos: 0,
