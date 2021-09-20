@@ -73,7 +73,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .try_init()?;
 
     info!("starting up...");
-    
 
     let pool = Arc::new(
         PgPoolOptions::new()
