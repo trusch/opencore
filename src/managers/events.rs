@@ -1,13 +1,11 @@
 use super::errors::Error;
 
-use flo_stream::MessagePublisher;
 use futures::Stream;
 use sqlx::types::Uuid;
 use std::collections::HashMap;
 use std::ops::Deref;
 use std::pin::Pin;
 use std::sync::Arc;
-use tokio::sync::mpsc;
 use tracing::Instrument;
 
 use crate::api::catalog;
@@ -57,8 +55,8 @@ impl From<EventRow> for SerializableEventRow {
 
 pub struct Manager {
     pool: Arc<sqlx::PgPool>,
-    publisher: flo_stream::Publisher<Event>,
     permissions: Arc<managers::permissions::Manager>,
+    sender: tokio::sync::broadcast::Sender<Event>,
 }
 
 #[derive(Debug, Clone)]
@@ -82,16 +80,16 @@ impl Manager {
         permissions: Arc<managers::permissions::Manager>,
         db_connect_str: &str,
     ) -> Result<Manager, Error> {
-        let publisher = flo_stream::Publisher::new(16);
+        let (tx, _) = tokio::sync::broadcast::channel(16);
         let res = Manager {
             pool,
-            publisher,
             permissions,
+            sender: tx,
         };
         res.init_tables().await?;
         let mut listener = sqlx::postgres::PgListener::connect(&db_connect_str).await?;
         listener.listen_all(vec!["event"]).await?;
-        let mut publisher = res.publisher.republish();
+        let sender = res.sender.to_owned();
         tokio::spawn(async move {
             loop {
                 let notification = match listener.recv().await {
@@ -124,20 +122,24 @@ impl Manager {
                     row.resource_id
                 );
 
-                publisher
-                    .publish(Event {
-                        id: row.id,
-                        resource_id: row.resource_id,
-                        resource_kind: row.resource_kind,
-                        resource_labels: serde_json::from_value(row.labels).unwrap(),
-                        event_type: row.event_type,
-                        data: data_str,
-                        created_at: Some(prost_types::Timestamp {
-                            seconds: row.created_at.timestamp(),
-                            nanos: 0,
-                        }),
-                    })
-                    .await;
+                match sender.send(Event {
+                    id: row.id,
+                    resource_id: row.resource_id,
+                    resource_kind: row.resource_kind,
+                    resource_labels: serde_json::from_value(row.labels).unwrap(),
+                    event_type: row.event_type,
+                    data: data_str,
+                    created_at: Some(prost_types::Timestamp {
+                        seconds: row.created_at.timestamp(),
+                        nanos: 0,
+                    }),
+                }) {
+                    Ok(_) => (),
+                    Err(err) => {
+                        log::error!("failed to send event: {}", err);
+                        continue;
+                    }
+                }
             }
         });
         Ok(res)
@@ -242,8 +244,9 @@ impl Manager {
         Pin<Box<impl Stream<Item = Result<Event, tonic::Status>> + Send + Sync + 'static>>,
         tonic::Status,
     > {
-        let mut stream = self.publisher.republish_weak().subscribe();
-        let (tx, rx) = mpsc::channel(4);
+        use tokio_stream::wrappers::BroadcastStream;
+        let mut stream = BroadcastStream::new(self.sender.subscribe());
+        let (tx, rx) = tokio::sync::mpsc::channel(4);
         let perms = self.permissions.clone();
         let claims = claims.clone();
         let filters = filters.to_vec();
@@ -256,13 +259,20 @@ impl Manager {
             async move {
                 use tokio_stream::StreamExt;
                 'mainloop: while let Some(evt) = stream.next().await {
+                    let event = match evt {
+                        Ok(event) => event,
+                        Err(err) => {
+                            log::error!("failed to receive events from db: {}", err);
+                            continue;
+                        }
+                    };
                     tracing::info!(
                         "got event ({:?}) in subscriber {:?}, doing checks",
-                        &evt,
+                        &event,
                         &claims.sub
                     );
                     if !claims.adm {
-                        let id = match Uuid::parse_str(&evt.resource_id) {
+                        let id = match Uuid::parse_str(&event.resource_id) {
                             Ok(id) => id,
                             Err(_) => continue,
                         };
@@ -271,7 +281,7 @@ impl Manager {
                             Err(_) => {
                                 tracing::info!(
                                     "discard event {:?} for {:?} because of insufficent privileges",
-                                    &evt,
+                                    &event,
                                     &claims.sub
                                 );
                                 continue;
@@ -282,17 +292,17 @@ impl Manager {
                     for filter in filters.iter() {
                         match filter {
                             SubscribeFilter::ByResource(id) => {
-                                if evt.resource_id != *id {
+                                if event.resource_id != *id {
                                     continue 'mainloop;
                                 }
                             }
                             SubscribeFilter::ByKind(kind) => {
-                                if evt.resource_kind != *kind {
+                                if event.resource_kind != *kind {
                                     continue 'mainloop;
                                 }
                             }
                             SubscribeFilter::ByType(event_type) => {
-                                let t = catalog::EventType::from(evt.event_type);
+                                let t = catalog::EventType::from(event.event_type);
                                 if t != *event_type {
                                     continue 'mainloop;
                                 }
@@ -302,7 +312,7 @@ impl Manager {
 
                     tracing::info!("all checks passed, send out event");
 
-                    match tx.send(Ok(evt)).await {
+                    match tx.send(Ok(event)).await {
                         Ok(_) => {}
                         Err(err) => {
                             log::error!("error while sending: {}", err);

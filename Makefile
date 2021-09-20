@@ -35,6 +35,11 @@ bin/opencore: $(shell find ./ -name "*.rs") $(shell find ./ -name "*.proto") .bu
 	buildah rm $(ID)
 	touch .build-image
 
+DOCKER?=docker
+docker-build: $(shell find ./ -name "*.rs") $(shell find ./ -name "*.proto")
+	$(DOCKER) build -t $(IMAGE) .
+	touch .image
+
 run: .image
 	-podman pod kill opencore
 	podman pod create --replace --name opencore \
