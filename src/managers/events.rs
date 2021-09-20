@@ -87,7 +87,7 @@ impl Manager {
             sender: tx,
         };
         res.init_tables().await?;
-        let mut listener = sqlx::postgres::PgListener::connect(&db_connect_str).await?;
+        let mut listener = sqlx::postgres::PgListener::connect(db_connect_str).await?;
         listener.listen_all(vec!["event"]).await?;
         let sender = res.sender.to_owned();
         tokio::spawn(async move {
