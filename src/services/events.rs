@@ -22,8 +22,8 @@ impl BaseService for Service {}
 
 impl Service {
     pub fn new(
-        validator: Arc<token::Validator>,
         manager: Arc<managers::events::Manager>,
+        validator: Arc<token::Validator>,
     ) -> Result<Service, sqlx::Error> {
         let res = Service { validator, manager };
         Ok(res)
