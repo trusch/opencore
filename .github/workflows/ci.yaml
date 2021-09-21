@@ -83,15 +83,20 @@ jobs:
         containerfiles: |
           ./Containerfile
 
+    - name: Log in to Quay.io
+      uses: redhat-actions/podman-login@v1
+      with:
+        username: trusch
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: quay.io
+
     - name: Push To quay.io
       id: push-to-quay
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: quay.io/trusch
-        username: trusch
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: quay.io
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
