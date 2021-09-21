@@ -95,7 +95,7 @@ impl Authentication for Service {
             if !ok {
                 return Err(Status::unauthenticated("wrong password"));
             }
-            
+
             // generate and return token
             Ok(Response::new(LoginResponse {
                 access_token: self.create_token(&sa.id, sa.is_admin, &[], false)?,
