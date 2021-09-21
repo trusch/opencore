@@ -1,0 +1,26 @@
+version: "3"
+services:
+
+  opencore:
+    image: quay.io/trusch/opencore:latest
+    environment:
+      RUST_LOG: "opencore=debug"
+    command:
+      - "opencore"
+      - "--listen=0.0.0.0:3001"
+      - "--database=postgres://postgres:postgres@postgres/postgres"
+      - "--secret=secret"
+    ports:
+      - "3001:3001"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+    volumes:
+      - opencore-data:/var/lib/postgresql/data
+
+volumes:
+  opencore-data: {}
