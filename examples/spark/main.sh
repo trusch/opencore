@@ -107,11 +107,11 @@ ds=$(call_opencore catalog.Resources/Create "$payload")
 ds_id=$(echo $ds | jq -r .id)
 
 # start worker
-podman run -d --pod opencore -it --name spark-worker containers.trusch.io/opencore/spark/worker:latest \
+podman run -d --pod opencore --name spark-worker containers.trusch.io/opencore/spark/worker:latest \
     spark-submit --jars "/app/jars/*.jar" /app/main.py \
         --opencore_addr=localhost:3001 \
         --service_account_id=data \
-        --service_account_token='$(DATA_SA_KEY)'
+        --service_account_token="${DATA_SA_KEY}"
 
 # create etl job
 data=$(jq -nc '{

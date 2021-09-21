@@ -58,7 +58,7 @@ The only exection is the `web` example, which comes with its own Makefile that b
 
 ## Build
 
-At this point you will need `podman` and `buildah` to build and run this service locally. You don't need a rust toolchain, but if you have one I'm sure you know how to use it. Maybe I'll add a `Containerfile` and a example `compose.yaml` later.
+At this point you will need `podman` and `buildah` to build and run this service locally. You don't need a rust toolchain, but if you have one I'm sure you know how to use it.
 
 To build the image run:
 ```
@@ -73,3 +73,17 @@ bash examples/<example you want>/main.sh
 The first command will create a pod with a postgresql database and opencore exposed at `grpc://localhost:3001`.
 
 The second command executes the example you want.
+
+### Build and run using docker and docker-compose
+
+For convenience there is a `Containerfile` that you can use to build a image using docker. Also there is a `compose.yaml` that shows how to run the service using docker-compose.
+
+```
+docker build -f Containerfile -t quay.io/trusch/opencore:latest .
+docker-compose up -d
+export CONTAINER_ENGINE=docker 
+bash examples/todo/main.sh
+bash examples/calculator/main.sh
+```
+
+
