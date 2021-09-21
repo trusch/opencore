@@ -113,12 +113,16 @@ struct ServicesContainer {
 }
 
 impl ServicesContainer {
-    pub async fn new(managers: &ManagersContainer) -> Result<ServicesContainer, Box<dyn std::error::Error>> {
+    pub async fn new(
+        managers: &ManagersContainer,
+    ) -> Result<ServicesContainer, Box<dyn std::error::Error>> {
         let schemas =
-        services::schemas::Service::new(managers.schemas.clone(), managers.validator.clone())?;
+            services::schemas::Service::new(managers.schemas.clone(), managers.validator.clone())?;
 
-        let resources =
-            services::resources::Service::new(managers.resources.clone(), managers.validator.clone())?;
+        let resources = services::resources::Service::new(
+            managers.resources.clone(),
+            managers.validator.clone(),
+        )?;
 
         let permissions = services::permissions::Service::new(
             managers.permissions.clone(),
@@ -126,7 +130,7 @@ impl ServicesContainer {
         )?;
 
         let events =
-            services::events::Service::new( managers.events.clone(),managers.validator.clone())?;
+            services::events::Service::new(managers.events.clone(), managers.validator.clone())?;
 
         let locks =
             services::locks::Service::new(managers.locks.clone(), managers.validator.clone())?;
@@ -150,8 +154,7 @@ impl ServicesContainer {
             &OPTS.secret.clone(),
         )?;
 
-
-        Ok(Self{
+        Ok(Self {
             schemas,
             resources,
             permissions,
@@ -204,8 +207,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 services.schemas,
             )),
         )
-        .add_service(web_config.enable(api::catalog::events_server::EventsServer::new(services.events)))
-        .add_service(web_config.enable(api::catalog::locks_server::LocksServer::new(services.locks)))
+        .add_service(
+            web_config.enable(api::catalog::events_server::EventsServer::new(
+                services.events,
+            )),
+        )
+        .add_service(
+            web_config.enable(api::catalog::locks_server::LocksServer::new(services.locks)),
+        )
         .add_service(
             web_config.enable(api::catalog::permissions_server::PermissionsServer::new(
                 services.permissions,
@@ -214,7 +223,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_service(web_config.enable(api::idp::users_server::UsersServer::new(services.users)))
         .add_service(web_config.enable(api::idp::groups_server::GroupsServer::new(services.groups)))
         .add_service(web_config.enable(
-            api::idp::service_accounts_server::ServiceAccountsServer::new(services.service_accounts),
+            api::idp::service_accounts_server::ServiceAccountsServer::new(
+                services.service_accounts,
+            ),
         ))
         .add_service(
             web_config.enable(api::idp::authentication_server::AuthenticationServer::new(
