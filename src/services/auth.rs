@@ -39,6 +39,7 @@ impl Authentication for Service {
         request: Request<LoginRequest>,
     ) -> Result<Response<LoginResponse>, Status> {
         if !request.get_ref().email.is_empty() {
+            tracing::info!("authenticate user");
             // get user
             let user = self
                 .user_manager
@@ -74,6 +75,8 @@ impl Authentication for Service {
                 refresh_token: self.create_token(&user.id, user.is_admin, &grps, true)?,
             }))
         } else {
+            tracing::info!("authenticate service account");
+
             // convert id to UUID
             let raw_id = &request.get_ref().service_account_id;
             let id = match Uuid::parse_str(raw_id) {
@@ -86,6 +89,13 @@ impl Authentication for Service {
                 .service_account_manager
                 .get(&Claims::admin(), &id)
                 .await?;
+
+            // check password
+            let ok = bcrypt::verify(&request.get_ref().password, &sa.secret_key_hash);
+            if !ok {
+                return Err(Status::unauthenticated("wrong password"));
+            }
+            
             // generate and return token
             Ok(Response::new(LoginResponse {
                 access_token: self.create_token(&sa.id, sa.is_admin, &[], false)?,
