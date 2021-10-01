@@ -41,7 +41,7 @@ impl Resources for Service {
         &self,
         request: Request<CreateResourceRequest>,
     ) -> Result<Response<Resource>, Status> {
-        let claims = self.validator.get_access_token_claims(&request)?;
+        let context = self.validator.get_context(&request)?;
         let r = request.get_ref();
         let data = Self::parse_json(&r.data)?;
 
@@ -61,7 +61,7 @@ impl Resources for Service {
         let res = self
             .mgr
             .create(crate::managers::resources::CreateOptions {
-                claims: &claims,
+                context: &context,
                 kind: &request.get_ref().kind,
                 parent_id,
                 permission_parent_id,
@@ -89,9 +89,9 @@ impl Resources for Service {
         &self,
         request: Request<DeleteResourceRequest>,
     ) -> Result<Response<Resource>, Status> {
-        let claims = self.validator.get_access_token_claims(&request)?;
+        let context = self.validator.get_context(&request)?;
         let id = Self::parse_uuid(&request.get_ref().id)?;
-        let res = self.mgr.delete(&claims, &id).await?;
+        let res = self.mgr.delete(&context, &id).await?;
         Ok(Response::new(res))
     }
 
@@ -100,11 +100,14 @@ impl Resources for Service {
         &self,
         request: Request<UpdateResourceRequest>,
     ) -> Result<Response<Resource>, Status> {
-        let claims = self.validator.get_access_token_claims(&request)?;
+        let context = self.validator.get_context(&request)?;
         let id = Self::parse_uuid(&request.get_ref().id)?;
         let patch_object = Self::parse_json(&request.get_ref().data)?;
         let labels = &request.get_ref().labels;
-        let result = self.mgr.update(&claims, &id, &patch_object, labels).await?;
+        let result = self
+            .mgr
+            .update(&context, &id, &patch_object, labels)
+            .await?;
         Ok(Response::new(result))
     }
 

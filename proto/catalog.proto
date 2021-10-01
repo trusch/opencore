@@ -198,4 +198,5 @@ message LockRequest {
 
 message LockResponse {
   string lock_id = 1;
+  int64 fencing_token = 2;
 }

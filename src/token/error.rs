@@ -46,3 +46,9 @@ impl From<std::str::Utf8Error> for Error {
         Error::Parse(format!("failed to parse token from headers: {}", item))
     }
 }
+
+impl From<std::num::ParseIntError> for Error {
+    fn from(item: std::num::ParseIntError) -> Self {
+        Error::Parse(format!("failed to parse token from headers: {}", item))
+    }
+}

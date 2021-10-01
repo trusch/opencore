@@ -2,6 +2,7 @@ use super::errors::Error;
 use crate::api;
 
 use futures::Stream;
+use sqlx::{Postgres, Transaction};
 use std::pin::Pin;
 use tracing::Instrument;
 
@@ -19,7 +20,24 @@ pub struct Manager {
 impl Manager {
     pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, Error> {
         let res = Manager { pool };
+        res.init_table().await?;
         Ok(res)
+    }
+
+    async fn init_table(&self) -> Result<(), Error> {
+        let _ = sqlx::query(
+            r#"
+            CREATE TABLE IF NOT EXISTS locks (
+                id VARCHAR(255) PRIMARY KEY,
+                created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+                updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+                fencing_token BIGINT NOT NULL
+            );
+        "#,
+        )
+        .execute(&*self.pool)
+        .await?;
+        Ok(())
     }
 
     #[tracing::instrument(name = "mgr::locks::lock", skip(self))]
@@ -56,6 +74,8 @@ impl Manager {
 
         info!("got lock");
 
+        let fencing_token = self.get_fencing_token(&lock_id).await?;
+
         tokio::spawn(
             async move {
                 use tokio::time::{sleep, Duration};
@@ -63,6 +83,7 @@ impl Manager {
                     match tx
                         .send(Ok(LockResponse {
                             lock_id: lock_id.to_string(),
+                            fencing_token,
                         }))
                         .await
                     {
@@ -125,6 +146,8 @@ impl Manager {
 
         info!("got lock");
 
+        let fencing_token = self.get_fencing_token(&lock_id).await?;
+
         tokio::spawn(
             async move {
                 use tokio::time::{sleep, Duration};
@@ -132,6 +155,7 @@ impl Manager {
                     match tx
                         .send(Ok(LockResponse {
                             lock_id: lock_id.to_string(),
+                            fencing_token,
                         }))
                         .await
                     {
@@ -153,5 +177,55 @@ impl Manager {
         );
 
         Ok(Box::pin(tokio_stream::wrappers::ReceiverStream::new(rx)))
+    }
+
+    #[tracing::instrument(name = "mgr::locks::check_fencing_token", skip(self))]
+    pub async fn check_fencing_token(
+        &self,
+        tx: &mut Transaction<'_, Postgres>,
+        lock_id: &str,
+        fencing_token: i64,
+    ) -> Result<bool, Error> {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+
+        let mut s = DefaultHasher::new();
+        lock_id.hash(&mut s);
+        let lock_id_int = s.finish();
+
+        let row: (bool,) = match sqlx::query_as("SELECT (fencing_token = $1) WHERE lock_id = $2")
+            .bind(fencing_token as i64)
+            .bind(lock_id_int as i64)
+            .fetch_one(tx)
+            .await
+        {
+            Ok(row) => row,
+            Err(err) => return Err(Error::Database(err.to_string())),
+        };
+
+        Ok(row.0)
+    }
+
+    async fn get_fencing_token(&self, lock_id: &str) -> Result<i64, Status> {
+        // insert lock into db and increase fencing_token if lock already exists
+        // This is done outside of the transaction to make the new fencing token available to other
+        let row: (i64,) = match sqlx::query_as(
+            r#"
+            INSERT INTO locks (id, fencing_token) 
+            VALUES ($1, $2) 
+            ON CONFLICT (id) DO UPDATE 
+            SET fencing_token = locks.fencing_token + 1,
+                updated_at = NOW()
+            RETURNING fencing_token"#,
+        )
+        .bind(&lock_id)
+        .bind(1)
+        .fetch_one(&*self.pool)
+        .await
+        {
+            Ok(row) => row,
+            Err(err) => return Err(Status::internal(err.to_string())),
+        };
+        Ok(row.0)
     }
 }
