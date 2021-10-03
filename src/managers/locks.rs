@@ -186,15 +186,16 @@ impl Manager {
         lock_id: &str,
         fencing_token: i64,
     ) -> Result<bool, Error> {
-        let row: (bool,) = match sqlx::query_as("SELECT (fencing_token = $1) FROM locks WHERE id = $2")
-            .bind(fencing_token)
-            .bind(lock_id)
-            .fetch_one(tx)
-            .await
-        {
-            Ok(row) => row,
-            Err(err) => return Err(Error::Database(err.to_string())),
-        };
+        let row: (bool,) =
+            match sqlx::query_as("SELECT (fencing_token = $1) FROM locks WHERE id = $2")
+                .bind(fencing_token)
+                .bind(lock_id)
+                .fetch_one(tx)
+                .await
+            {
+                Ok(row) => row,
+                Err(err) => return Err(Error::Database(err.to_string())),
+            };
 
         Ok(row.0)
     }

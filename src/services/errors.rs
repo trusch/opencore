@@ -8,7 +8,9 @@ impl From<Error> for tonic::Status {
             Error::InvalidArgument(cause) => tonic::Status::invalid_argument(cause),
             Error::NotFound => tonic::Status::not_found("not found"),
             Error::Forbidden => tonic::Status::permission_denied("you have no right to do this"),
-            Error::InvalidFencingToken => tonic::Status::resource_exhausted("invalid fencing token"),
+            Error::InvalidFencingToken => {
+                tonic::Status::resource_exhausted("invalid fencing token")
+            }
         }
     }
 }
