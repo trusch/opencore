@@ -32,6 +32,11 @@ call_opencore catalog.Schemas/Create "$payload" 2>&1 >/dev/null
 echo "Main: create service account 'calculator'"
 payload=$(jq -n '{name: "calculator"}')
 export CALCULATOR_KEY=$(call_opencore idp.ServiceAccounts/Create "$payload" | jq -r .secretKey)
+if [ -z "$CALCULATOR_KEY" ]; then
+    # reset secret key
+    payload=$(jq -n '{id: "calculator"}')
+    export CALCULATOR_KEY=$(call_opencore idp.ServiceAccounts/Update "$payload" | jq -r .secretKey)
+fi
 
 echo "Main: Create user_1@localhost"
 payload=$(jq -n '{name: "user_1", email: "user_1@localhost", password: "password"}')
@@ -73,9 +78,8 @@ function calculation_worker {
                 
                 # save the result by patching the resource
                 echo "Worker $1: Send result"
-                patch=$(jq -c -n --arg output $output '{output: $output}')
+                patch=$(jq -cn --arg output $output '{output: $output}')
                 payload=$(jq -cn --arg id "$calc_id" --arg data "$patch" '{id: $id, data: $data}')
-                echo "payload: $payload"
                 call_opencore catalog.Resources/Update "$payload" >/dev/null;
             else
                 echo "Worker $1: The calculation task is already done in the meantime, nothing to do here."
@@ -109,9 +113,9 @@ echo $calculation
 
 payload=$(printf '{"resource_id": "%s", "event_type": "UPDATE"}' $calculation_id)
 echo "Main: listen for update events on $calculation_id"
-call_opencore catalog.Events/Subscribe "$payload" | jq -c --unbuffered | (read -r line && (\
-    echo "Main: Got the result:"
-    echo $line | jq -r .data | jq .
+call_opencore catalog.Events/Subscribe "$payload" | jq -c --unbuffered | {
+    read -r line
+    echo $line | jq -r .data | jq -r .output
     end_ms=$(($(date +%s%N)/1000000)) # timestamp in milliseconds
     echo "Main: waiting for this took $(echo "$end_ms - $start_ms" | bc -l)ms"
-))
+}

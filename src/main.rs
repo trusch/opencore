@@ -76,6 +76,7 @@ impl ManagersContainer {
                 permissions.clone(),
                 schemas.clone(),
                 events.clone(),
+                locks.clone(),
             )
             .await?,
         );

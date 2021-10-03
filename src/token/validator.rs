@@ -2,6 +2,7 @@ use jsonwebtoken::{decode, DecodingKey, Validation};
 
 use super::claims::Claims;
 use super::error::Error;
+use crate::token::context::Context;
 
 #[derive(Debug)]
 pub struct Validator {
@@ -13,6 +14,29 @@ impl Validator {
         Validator {
             decoding_key: DecodingKey::from_secret(secret.as_ref()),
         }
+    }
+
+    pub fn get_context<T>(&self, req: &tonic::Request<T>) -> Result<Context, Error> {
+        let claims = self.get_access_token_claims(req)?;
+        let fencing_token = match req.metadata().get("X-Fencing-Token") {
+            Some(data) => {
+                let token = std::str::from_utf8(data.as_bytes())?;
+                let parts = token.split('#').collect::<Vec<&str>>();
+                if parts.len() != 2 {
+                    return Err(Error::Parse(
+                        "failed to parse X-Fencing-Token header".into(),
+                    ));
+                }
+                let lock_id = parts[0];
+                let fence_id = parts[1].parse::<i64>()?;
+                Some((lock_id.to_string(), fence_id))
+            }
+            None => None,
+        };
+        Ok(Context {
+            claims,
+            fencing_token,
+        })
     }
 
     pub fn get_access_token_claims<T>(&self, req: &tonic::Request<T>) -> Result<Claims, Error> {

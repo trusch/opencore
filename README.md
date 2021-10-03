@@ -58,7 +58,7 @@ The only exection is the `web` example, which comes with its own Makefile that b
 
 ## Build
 
-At this point you will need `podman` and `buildah` to build and run this service locally. You don't need a rust toolchain, but if you have one I'm sure you know how to use it.
+For the default build process you will need `podman` and `buildah` to build and run this service locally. You don't need a rust toolchain, but if you have one I'm sure you know how to use it.
 
 To build the image run:
 ```

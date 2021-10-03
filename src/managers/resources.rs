@@ -16,6 +16,7 @@ use sea_query_driver_postgres::bind_query_as;
 use crate::api;
 use crate::managers;
 use crate::token::Claims;
+use crate::token::Context;
 
 use api::catalog::{Resource, ShareRequest};
 
@@ -64,11 +65,12 @@ pub struct Manager {
     permissions: Arc<managers::permissions::Manager>,
     schemas: Arc<managers::schemas::Manager>,
     events: Arc<managers::events::Manager>,
+    locks: Arc<managers::locks::Manager>,
 }
 
 #[derive(Debug)]
 pub struct CreateOptions<'a> {
-    pub claims: &'a Claims,
+    pub context: &'a Context,
     pub kind: &'a String,
     pub parent_id: Option<&'a Uuid>,
     pub permission_parent_id: Option<&'a Uuid>,
@@ -83,12 +85,14 @@ impl Manager {
         permissions: Arc<managers::permissions::Manager>,
         schemas: Arc<managers::schemas::Manager>,
         events: Arc<managers::events::Manager>,
+        locks: Arc<managers::locks::Manager>,
     ) -> Result<Manager, Error> {
         let res = Manager {
             pool,
             permissions,
             schemas,
             events,
+            locks,
         };
         res.init_tables().await?;
         Ok(res)
@@ -191,7 +195,7 @@ impl Manager {
                 .unwrap_or(&resource_id)
                 .to_hyphenated()
                 .to_string(),
-            creator_id: opts.claims.sub.clone(),
+            creator_id: opts.context.claims.sub.clone(),
             kind: opts.kind.clone(),
             data: data_str,
             labels: opts.labels.clone(),
@@ -206,6 +210,17 @@ impl Manager {
         };
 
         let label_value = serde_json::to_value(opts.labels)?;
+
+        // check fencing token
+        if let Some((lock_id, fencing_token)) = &opts.context.fencing_token {
+            let is_ok = self
+                .locks
+                .check_fencing_token(tx, lock_id, *fencing_token)
+                .await?;
+            if !is_ok {
+                return Err(Error::Forbidden);
+            }
+        }
 
         sqlx::query("INSERT INTO resources(resource_id, kind, parent_id, permission_parent_id, creator_id, created_at, updated_at, data, labels) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)").
             bind(&resource_id).
@@ -222,7 +237,7 @@ impl Manager {
         match opts.permission_parent_id {
             Some(_) => {}
             None => {
-                let user_id = Uuid::parse_str(&opts.claims.sub)?;
+                let user_id = Uuid::parse_str(&opts.context.claims.sub)?;
                 let perms: Vec<String> = vec!["grant", "read", "write"]
                     .iter()
                     .map(|x| x.to_string())
@@ -269,42 +284,69 @@ impl Manager {
     }
 
     #[tracing::instrument(name = "mgr::resources::delete", skip(self))]
-    pub async fn delete(&self, claims: &Claims, id: &Uuid) -> Result<Resource, Error> {
-        self.permissions.check(id, "write", claims).await?;
+    pub async fn delete(&self, context: &Context, id: &Uuid) -> Result<Resource, Error> {
+        let mut tx = self.pool.begin().await?;
 
-        let res = self.get(claims, id).await?;
+        self.permissions.check(id, "write", &context.claims).await?;
+
+        let old = self.get(&context.claims, id).await?;
+
+        // check fencing token
+        if let Some((lock_id, fencing_token)) = &context.fencing_token {
+            let is_ok = self
+                .locks
+                .check_fencing_token(&mut tx, lock_id, *fencing_token)
+                .await?;
+            if !is_ok {
+                return Err(Error::Forbidden);
+            }
+        }
 
         sqlx::query("DELETE FROM resources WHERE resource_id = $1")
             .bind(&id)
-            .execute(self.pool.deref())
+            .execute(&mut tx)
             .await?;
+
+        tx.commit().await?;
 
         self.events
             .publish(
                 &Claims::admin(),
                 id,
-                &res.kind,
-                &res.labels,
+                &old.kind,
+                &old.labels,
                 api::catalog::EventType::Delete,
-                &serde_json::from_str(&res.data)?,
+                &serde_json::from_str(&old.data)?,
             )
             .await?;
-        Ok(res)
+
+        Ok(old)
     }
 
     #[tracing::instrument(name = "mgr::resources::update", skip(self))]
     pub async fn update(
         &self,
-        claims: &Claims,
+        context: &Context,
         id: &Uuid,
         doc: &serde_json::Value,
         labels: &HashMap<String, String>,
     ) -> Result<Resource, Error> {
         let mut tx = self.pool.begin().await?;
 
-        self.permissions.check(id, "write", claims).await?;
+        self.permissions.check(id, "write", &context.claims).await?;
 
-        let mut resource = self.get(claims, id).await?;
+        // check fencing token
+        if let Some((lock_id, fencing_token)) = &context.fencing_token {
+            let is_ok = self
+                .locks
+                .check_fencing_token(&mut tx, lock_id, *fencing_token)
+                .await?;
+            if !is_ok {
+                return Err(Error::Forbidden);
+            }
+        }
+
+        let mut resource = self.get(&context.claims, id).await?;
 
         let mut data = serde_json::from_str(&resource.data)?;
 
