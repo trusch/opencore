@@ -13,6 +13,6 @@ COPY proto ./proto
 RUN cargo build --release
 RUN cargo install --path . --verbose
 
-FROM docker.io/library/debian:bullseye AS runtime
+FROM gcr.io/distroless/cc-debian11:latest AS runtime
 COPY --from=build /usr/local/cargo/bin/opencore /bin/opencore
 CMD ["/bin/opencore"]
