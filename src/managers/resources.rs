@@ -218,7 +218,7 @@ impl Manager {
                 .check_fencing_token(tx, lock_id, *fencing_token)
                 .await?;
             if !is_ok {
-                return Err(Error::Forbidden);
+                return Err(Error::InvalidFencingToken);
             }
         }
 
@@ -298,7 +298,7 @@ impl Manager {
                 .check_fencing_token(&mut tx, lock_id, *fencing_token)
                 .await?;
             if !is_ok {
-                return Err(Error::Forbidden);
+                return Err(Error::InvalidFencingToken);
             }
         }
 
@@ -342,7 +342,7 @@ impl Manager {
                 .check_fencing_token(&mut tx, lock_id, *fencing_token)
                 .await?;
             if !is_ok {
-                return Err(Error::Forbidden);
+                return Err(Error::InvalidFencingToken);
             }
         }
 

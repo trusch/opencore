@@ -5,6 +5,7 @@ pub enum Error {
     Database(String),
     InvalidArgument(String),
     Send(String),
+    InvalidFencingToken,
     NotFound,
     Forbidden,
 }
@@ -19,6 +20,7 @@ impl std::fmt::Display for Error {
             Error::Send(cause) => write!(f, "failed to send data: {}", cause),
             Error::NotFound => write!(f, "not found"),
             Error::Forbidden => write!(f, "forbidden"),
+            Error::InvalidFencingToken => write!(f, "invalid fencing token"),
         }
     }
 }

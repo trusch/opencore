@@ -186,16 +186,9 @@ impl Manager {
         lock_id: &str,
         fencing_token: i64,
     ) -> Result<bool, Error> {
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-
-        let mut s = DefaultHasher::new();
-        lock_id.hash(&mut s);
-        let lock_id_int = s.finish();
-
-        let row: (bool,) = match sqlx::query_as("SELECT (fencing_token = $1) WHERE lock_id = $2")
-            .bind(fencing_token as i64)
-            .bind(lock_id_int as i64)
+        let row: (bool,) = match sqlx::query_as("SELECT (fencing_token = $1) FROM locks WHERE id = $2")
+            .bind(fencing_token)
+            .bind(lock_id)
             .fetch_one(tx)
             .await
         {
@@ -206,9 +199,11 @@ impl Manager {
         Ok(row.0)
     }
 
+    #[tracing::instrument(name = "mgr::locks::get_fencing_token", skip(self))]
     async fn get_fencing_token(&self, lock_id: &str) -> Result<i64, Status> {
-        // insert lock into db and increase fencing_token if lock already exists
+        // insert lock into db or increase fencing_token if lock already exists
         // This is done outside of the transaction to make the new fencing token available to other
+        // Note that this is done AFTER the pg_advisory_lock is aquired.
         let row: (i64,) = match sqlx::query_as(
             r#"
             INSERT INTO locks (id, fencing_token) 
