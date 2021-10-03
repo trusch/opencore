@@ -21,6 +21,8 @@ impl Validator {
         let fencing_token = match req.metadata().get("X-Fencing-Token") {
             Some(data) => {
                 let token = std::str::from_utf8(data.as_bytes())?;
+                tracing::debug!("X-Fencing-Token: {}", &token);
+
                 let parts = token.split('#').collect::<Vec<&str>>();
                 if parts.len() != 2 {
                     return Err(Error::Parse(
