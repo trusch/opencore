@@ -1,7 +1,7 @@
 IMAGE=containers.trusch.io/opencore/core:latest
 BASE_IMAGE=gcr.io/distroless/cc-debian11:latest
 BUILD_IMAGE=containers.trusch.io/opencore/builder
-BUILD_BASE_IMAGE=docker.io/library/rust:1.55-bullseye
+BUILD_BASE_IMAGE=docker.io/library/rust:1.57-bullseye
 DB_VOLUME=--tmpfs=/var/lib/postgresql/data
 
 # use mold for faster linking

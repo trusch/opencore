@@ -1,4 +1,4 @@
-FROM docker.io/library/rust:1.55-bullseye AS build
+FROM docker.io/library/rust:1.57-bullseye AS build
 
 RUN rustup component add rustfmt
 
