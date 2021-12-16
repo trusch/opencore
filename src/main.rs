@@ -5,6 +5,17 @@ use std::sync::Arc;
 use tonic::transport::Server;
 use tracing_subscriber::util::SubscriberInitExt;
 
+use axum::body::BoxBody;
+use futures::ready;
+use hyper::service::make_service_fn;
+use hyper::{Body, Request, Response};
+use pin_project::pin_project;
+use std::future::Future;
+use std::net::ToSocketAddrs;
+use std::pin::Pin;
+use std::task::Poll;
+use tower::{Service, ServiceExt};
+
 #[macro_use]
 extern crate lazy_static;
 
@@ -22,6 +33,8 @@ struct Opts {
     listen: String,
     #[clap(short, long, default_value = "secret")]
     secret: String,
+    #[clap(long, default_value = "127.0.0.1:3000")]
+    allow_origins: Vec<String>,
 }
 
 lazy_static! {
@@ -183,7 +196,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "http://localhost".to_string(),
     ]);
 
-    Server::builder()
+    let grpc_service = Server::builder()
         .accept_http1(true)
         .add_service(
             web_config.enable(api::catalog::resources_server::ResourcesServer::new(
@@ -221,8 +234,34 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             )),
         )
         .add_service(reflection_service)
-        .serve(OPTS.listen.parse()?)
-        .await?;
+        .into_service()
+        // Needed to unify body type into axum's BoxBody
+        .map_response(|response| {
+            let (parts, body) = response.into_parts();
+            Response::from_parts(parts, axum::body::box_body(body))
+        });
+
+    let axum_service = axum::Router::new()
+        .route("/", axum::handler::get(|| async { "Hello world!" }))
+        // Needed to unify errors types from Infallible to tonic's Box<dyn std::error::Error + Send + Sync>
+        .map_err(|i| match i {});
+
+    let hybrid_service = HybridService {
+        web: axum_service,
+        grpc: grpc_service,
+    };
+
+    // parse the listen address to a proper socket addr struct
+    let addr = OPTS.listen.to_socket_addrs()?.next().unwrap();
+
+    let server = hyper::Server::bind(&addr).serve(make_service_fn(move |_conn| {
+        let hybrid_service = hybrid_service.clone();
+        async { Ok::<_, axum::Error>(hybrid_service) }
+    }));
+
+    if let Err(e) = server.await {
+        eprintln!("server error: {}", e);
+    }
 
     Ok(())
 }
@@ -274,4 +313,65 @@ async fn create_admin_service_account(
         }
     };
     Ok(())
+}
+
+// taken from https://github.com/CthulhuDen/tonic-example/blob/master/src/bin/server-hybrid.rs
+#[derive(Clone)]
+struct HybridService<Web, Grpc> {
+    web: Web,
+    grpc: Grpc,
+}
+
+impl<Web, Grpc, Error> Service<Request<Body>> for HybridService<Web, Grpc>
+where
+    Web: Service<Request<Body>, Response = Response<BoxBody>, Error = Error>,
+    Grpc: Service<Request<Body>, Response = Response<BoxBody>, Error = Error>,
+{
+    type Response = Response<BoxBody>;
+    type Error = Error;
+    type Future = HybridFuture<Web::Future, Grpc::Future>;
+
+    fn poll_ready(
+        &mut self,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Result<(), Self::Error>> {
+        Poll::Ready(if let Err(err) = ready!(self.web.poll_ready(cx)) {
+            Err(err)
+        } else {
+            ready!(self.web.poll_ready(cx))
+        })
+    }
+
+    fn call(&mut self, req: Request<Body>) -> Self::Future {
+        match req.headers().get(hyper::header::CONTENT_TYPE) {
+            Some(ct)
+                if ct.as_bytes() == b"application/grpc"
+                    || ct.as_bytes().starts_with(b"application/grpc-web") =>
+            {
+                HybridFuture::Grpc(self.grpc.call(req))
+            }
+            _ => HybridFuture::Web(self.web.call(req)),
+        }
+    }
+}
+
+#[pin_project(project = HybridFutureProj)]
+enum HybridFuture<WebFuture, GrpcFuture> {
+    Web(#[pin] WebFuture),
+    Grpc(#[pin] GrpcFuture),
+}
+
+impl<WebFuture, GrpcFuture, Output> Future for HybridFuture<WebFuture, GrpcFuture>
+where
+    WebFuture: Future<Output = Output>,
+    GrpcFuture: Future<Output = Output>,
+{
+    type Output = Output;
+
+    fn poll(self: Pin<&mut Self>, cx: &mut std::task::Context) -> Poll<Self::Output> {
+        match self.project() {
+            HybridFutureProj::Web(a) => a.poll(cx),
+            HybridFutureProj::Grpc(b) => b.poll(cx),
+        }
+    }
 }

@@ -2,7 +2,7 @@
 name = "opencore"
 authors = ["Tino Rusch <tino.rusch@gmail.com>"]
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [[bin]] # Bin to run the catalog gRPC server
 name = "opencore"
@@ -10,6 +10,12 @@ path = "src/main.rs"
 
 [dependencies]
 async-stream = "0.3"
+
+tower = { version = "0.4", features = ["full"] }
+hyper = { version = "0.14", features = ["full"] }
+pin-project = "1"
+axum = "0.2"
+
 tonic = "0.5"
 tonic-web = "0.1"
 prost = "0.8"
@@ -39,6 +45,7 @@ tracing-subscriber = "0.2"
 tracing-opentelemetry = "0.15"
 opentelemetry = { version = "*", features = ["rt-tokio"] }
 opentelemetry-jaeger = { version = "*", features = ["rt-tokio", "collector_client", "reqwest_collector_client"] }
+lettre = "0.10.0-rc.3"
 
 [build-dependencies]
 tonic-build = "0.5"
