@@ -8,23 +8,10 @@ use tracing_subscriber::util::SubscriberInitExt;
 #[macro_use]
 extern crate lazy_static;
 
-pub mod api {
-    pub mod catalog {
-        tonic::include_proto!("catalog");
-        pub(crate) const CATALOG_FILE_DESCRIPTOR_SET: &[u8] =
-            tonic::include_file_descriptor_set!("catalog_descriptor");
-    }
-
-    pub mod idp {
-        tonic::include_proto!("idp");
-        pub(crate) const IDP_FILE_DESCRIPTOR_SET: &[u8] =
-            tonic::include_file_descriptor_set!("idp_descriptor");
-    }
-}
-
-mod managers;
-mod services;
-mod token;
+use opencore::api;
+use opencore::managers;
+use opencore::services;
+use opencore::token;
 
 #[derive(Clap)]
 #[clap(version = "0.1", author = "Tino Rusch <tino.rusch@gmail.com>")]
