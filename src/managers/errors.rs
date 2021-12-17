@@ -83,3 +83,24 @@ impl From<crate::token::error::Error> for Error {
         Error::InvalidArgument(format!("failed to handle claim data: {}", item))
     }
 }
+
+impl From<lettre::transport::smtp::Error> for Error {
+    fn from(item: lettre::transport::smtp::Error) -> Self {
+        error!("{}", item);
+        Error::Send(format!("failed to send email: {}", item))
+    }
+}
+
+impl From<lettre::address::AddressError> for Error {
+    fn from(item: lettre::address::AddressError) -> Self {
+        error!("{}", item);
+        Error::Send(format!("failed to parse email address: {}", item))
+    }
+}
+
+impl From<lettre::error::Error> for Error {
+    fn from(item: lettre::error::Error) -> Self {
+        error!("{}", item);
+        Error::Send(format!("failed to send email: {}", item))
+    }
+}

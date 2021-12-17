@@ -7,3 +7,4 @@ pub mod resources;
 pub mod schemas;
 pub mod service_accounts;
 pub mod users;
+pub mod email;
