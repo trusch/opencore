@@ -5239,7 +5239,8 @@ proto.catalog.LockResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.catalog.LockResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    lockId: jspb.Message.getFieldWithDefault(msg, 1, "")
+    lockId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    fencingToken: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -5280,6 +5281,10 @@ proto.catalog.LockResponse.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setLockId(value);
       break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setFencingToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5316,6 +5321,13 @@ proto.catalog.LockResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getFencingToken();
+  if (f !== 0) {
+    writer.writeInt64(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -5334,6 +5346,24 @@ proto.catalog.LockResponse.prototype.getLockId = function() {
  */
 proto.catalog.LockResponse.prototype.setLockId = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional int64 fencing_token = 2;
+ * @return {number}
+ */
+proto.catalog.LockResponse.prototype.getFencingToken = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.catalog.LockResponse} returns this
+ */
+proto.catalog.LockResponse.prototype.setFencingToken = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
 };
 
 

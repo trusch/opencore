@@ -23,7 +23,7 @@ proto.catalog = require('./catalog_pb.js');
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -31,7 +31,7 @@ proto.catalog = require('./catalog_pb.js');
 proto.catalog.ResourcesClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -49,7 +49,7 @@ proto.catalog.ResourcesClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -57,7 +57,7 @@ proto.catalog.ResourcesClient =
 proto.catalog.ResourcesPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -95,30 +95,11 @@ const methodDescriptor_Resources_Create = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.CreateResourceRequest,
- *   !proto.catalog.Resource>}
- */
-const methodInfo_Resources_Create = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Resource,
-  /**
-   * @param {!proto.catalog.CreateResourceRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Resource.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.CreateResourceRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Resource)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Resource)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>|undefined}
  *     The XHR Node Readable Stream
@@ -137,7 +118,7 @@ proto.catalog.ResourcesClient.prototype.create =
 /**
  * @param {!proto.catalog.CreateResourceRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Resource>}
  *     Promise that resolves to the response
@@ -175,30 +156,11 @@ const methodDescriptor_Resources_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.GetResourceRequest,
- *   !proto.catalog.Resource>}
- */
-const methodInfo_Resources_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Resource,
-  /**
-   * @param {!proto.catalog.GetResourceRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Resource.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.GetResourceRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Resource)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Resource)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>|undefined}
  *     The XHR Node Readable Stream
@@ -217,7 +179,7 @@ proto.catalog.ResourcesClient.prototype.get =
 /**
  * @param {!proto.catalog.GetResourceRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Resource>}
  *     Promise that resolves to the response
@@ -255,30 +217,11 @@ const methodDescriptor_Resources_Update = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.UpdateResourceRequest,
- *   !proto.catalog.Resource>}
- */
-const methodInfo_Resources_Update = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Resource,
-  /**
-   * @param {!proto.catalog.UpdateResourceRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Resource.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.UpdateResourceRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Resource)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Resource)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>|undefined}
  *     The XHR Node Readable Stream
@@ -297,7 +240,7 @@ proto.catalog.ResourcesClient.prototype.update =
 /**
  * @param {!proto.catalog.UpdateResourceRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Resource>}
  *     Promise that resolves to the response
@@ -335,30 +278,11 @@ const methodDescriptor_Resources_Delete = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.DeleteResourceRequest,
- *   !proto.catalog.Resource>}
- */
-const methodInfo_Resources_Delete = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Resource,
-  /**
-   * @param {!proto.catalog.DeleteResourceRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Resource.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.DeleteResourceRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Resource)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Resource)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>|undefined}
  *     The XHR Node Readable Stream
@@ -377,7 +301,7 @@ proto.catalog.ResourcesClient.prototype.delete =
 /**
  * @param {!proto.catalog.DeleteResourceRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Resource>}
  *     Promise that resolves to the response
@@ -415,27 +339,8 @@ const methodDescriptor_Resources_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.ListResourcesRequest,
- *   !proto.catalog.Resource>}
- */
-const methodInfo_Resources_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Resource,
-  /**
-   * @param {!proto.catalog.ListResourcesRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Resource.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.ListResourcesRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>}
  *     The XHR Node Readable Stream
@@ -452,7 +357,7 @@ proto.catalog.ResourcesClient.prototype.list =
 
 /**
  * @param {!proto.catalog.ListResourcesRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Resource>}
  *     The XHR Node Readable Stream
@@ -470,7 +375,7 @@ proto.catalog.ResourcesPromiseClient.prototype.list =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -478,7 +383,7 @@ proto.catalog.ResourcesPromiseClient.prototype.list =
 proto.catalog.SchemasClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -496,7 +401,7 @@ proto.catalog.SchemasClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -504,7 +409,7 @@ proto.catalog.SchemasClient =
 proto.catalog.SchemasPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -542,30 +447,11 @@ const methodDescriptor_Schemas_Create = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.CreateSchemaRequest,
- *   !proto.catalog.Schema>}
- */
-const methodInfo_Schemas_Create = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Schema,
-  /**
-   * @param {!proto.catalog.CreateSchemaRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Schema.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.CreateSchemaRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Schema)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Schema)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>|undefined}
  *     The XHR Node Readable Stream
@@ -584,7 +470,7 @@ proto.catalog.SchemasClient.prototype.create =
 /**
  * @param {!proto.catalog.CreateSchemaRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Schema>}
  *     Promise that resolves to the response
@@ -622,30 +508,11 @@ const methodDescriptor_Schemas_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.GetSchemaRequest,
- *   !proto.catalog.Schema>}
- */
-const methodInfo_Schemas_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Schema,
-  /**
-   * @param {!proto.catalog.GetSchemaRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Schema.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.GetSchemaRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Schema)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Schema)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>|undefined}
  *     The XHR Node Readable Stream
@@ -664,7 +531,7 @@ proto.catalog.SchemasClient.prototype.get =
 /**
  * @param {!proto.catalog.GetSchemaRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Schema>}
  *     Promise that resolves to the response
@@ -702,30 +569,11 @@ const methodDescriptor_Schemas_Update = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.UpdateSchemaRequest,
- *   !proto.catalog.Schema>}
- */
-const methodInfo_Schemas_Update = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Schema,
-  /**
-   * @param {!proto.catalog.UpdateSchemaRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Schema.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.UpdateSchemaRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Schema)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Schema)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>|undefined}
  *     The XHR Node Readable Stream
@@ -744,7 +592,7 @@ proto.catalog.SchemasClient.prototype.update =
 /**
  * @param {!proto.catalog.UpdateSchemaRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Schema>}
  *     Promise that resolves to the response
@@ -782,30 +630,11 @@ const methodDescriptor_Schemas_Delete = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.DeleteSchemaRequest,
- *   !proto.catalog.Schema>}
- */
-const methodInfo_Schemas_Delete = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Schema,
-  /**
-   * @param {!proto.catalog.DeleteSchemaRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Schema.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.DeleteSchemaRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Schema)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Schema)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>|undefined}
  *     The XHR Node Readable Stream
@@ -824,7 +653,7 @@ proto.catalog.SchemasClient.prototype.delete =
 /**
  * @param {!proto.catalog.DeleteSchemaRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Schema>}
  *     Promise that resolves to the response
@@ -862,27 +691,8 @@ const methodDescriptor_Schemas_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.ListSchemasRequest,
- *   !proto.catalog.Schema>}
- */
-const methodInfo_Schemas_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Schema,
-  /**
-   * @param {!proto.catalog.ListSchemasRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Schema.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.ListSchemasRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>}
  *     The XHR Node Readable Stream
@@ -899,7 +709,7 @@ proto.catalog.SchemasClient.prototype.list =
 
 /**
  * @param {!proto.catalog.ListSchemasRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Schema>}
  *     The XHR Node Readable Stream
@@ -917,7 +727,7 @@ proto.catalog.SchemasPromiseClient.prototype.list =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -925,7 +735,7 @@ proto.catalog.SchemasPromiseClient.prototype.list =
 proto.catalog.PermissionsClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -943,7 +753,7 @@ proto.catalog.PermissionsClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -951,7 +761,7 @@ proto.catalog.PermissionsClient =
 proto.catalog.PermissionsPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -989,30 +799,11 @@ const methodDescriptor_Permissions_Share = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.ShareRequest,
- *   !proto.catalog.PermissionInfo>}
- */
-const methodInfo_Permissions_Share = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.PermissionInfo,
-  /**
-   * @param {!proto.catalog.ShareRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.PermissionInfo.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.ShareRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.PermissionInfo)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.PermissionInfo)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionInfo>|undefined}
  *     The XHR Node Readable Stream
@@ -1031,7 +822,7 @@ proto.catalog.PermissionsClient.prototype.share =
 /**
  * @param {!proto.catalog.ShareRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.PermissionInfo>}
  *     Promise that resolves to the response
@@ -1069,30 +860,11 @@ const methodDescriptor_Permissions_Unshare = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.UnshareRequest,
- *   !proto.catalog.PermissionInfo>}
- */
-const methodInfo_Permissions_Unshare = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.PermissionInfo,
-  /**
-   * @param {!proto.catalog.UnshareRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.PermissionInfo.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.UnshareRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.PermissionInfo)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.PermissionInfo)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionInfo>|undefined}
  *     The XHR Node Readable Stream
@@ -1111,7 +883,7 @@ proto.catalog.PermissionsClient.prototype.unshare =
 /**
  * @param {!proto.catalog.UnshareRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.PermissionInfo>}
  *     Promise that resolves to the response
@@ -1149,30 +921,11 @@ const methodDescriptor_Permissions_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.GetPermissionInfoRequest,
- *   !proto.catalog.PermissionInfo>}
- */
-const methodInfo_Permissions_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.PermissionInfo,
-  /**
-   * @param {!proto.catalog.GetPermissionInfoRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.PermissionInfo.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.GetPermissionInfoRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.PermissionInfo)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.PermissionInfo)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionInfo>|undefined}
  *     The XHR Node Readable Stream
@@ -1191,7 +944,7 @@ proto.catalog.PermissionsClient.prototype.get =
 /**
  * @param {!proto.catalog.GetPermissionInfoRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.PermissionInfo>}
  *     Promise that resolves to the response
@@ -1229,27 +982,8 @@ const methodDescriptor_Permissions_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.ListPermissionsRequest,
- *   !proto.catalog.PermissionInfo>}
- */
-const methodInfo_Permissions_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.PermissionInfo,
-  /**
-   * @param {!proto.catalog.ListPermissionsRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.PermissionInfo.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.ListPermissionsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionInfo>}
  *     The XHR Node Readable Stream
@@ -1266,7 +1000,7 @@ proto.catalog.PermissionsClient.prototype.list =
 
 /**
  * @param {!proto.catalog.ListPermissionsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionInfo>}
  *     The XHR Node Readable Stream
@@ -1304,30 +1038,11 @@ const methodDescriptor_Permissions_Check = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.PermissionCheckRequest,
- *   !proto.catalog.PermissionCheckResponse>}
- */
-const methodInfo_Permissions_Check = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.PermissionCheckResponse,
-  /**
-   * @param {!proto.catalog.PermissionCheckRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.PermissionCheckResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.PermissionCheckRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.PermissionCheckResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.PermissionCheckResponse)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.PermissionCheckResponse>|undefined}
  *     The XHR Node Readable Stream
@@ -1346,7 +1061,7 @@ proto.catalog.PermissionsClient.prototype.check =
 /**
  * @param {!proto.catalog.PermissionCheckRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.PermissionCheckResponse>}
  *     Promise that resolves to the response
@@ -1364,7 +1079,7 @@ proto.catalog.PermissionsPromiseClient.prototype.check =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1372,7 +1087,7 @@ proto.catalog.PermissionsPromiseClient.prototype.check =
 proto.catalog.EventsClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1390,7 +1105,7 @@ proto.catalog.EventsClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1398,7 +1113,7 @@ proto.catalog.EventsClient =
 proto.catalog.EventsPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1436,30 +1151,11 @@ const methodDescriptor_Events_Publish = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.PublishRequest,
- *   !proto.catalog.Event>}
- */
-const methodInfo_Events_Publish = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Event,
-  /**
-   * @param {!proto.catalog.PublishRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Event.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.PublishRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.catalog.Event)}
+ * @param {function(?grpc.web.RpcError, ?proto.catalog.Event)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Event>|undefined}
  *     The XHR Node Readable Stream
@@ -1478,7 +1174,7 @@ proto.catalog.EventsClient.prototype.publish =
 /**
  * @param {!proto.catalog.PublishRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.catalog.Event>}
  *     Promise that resolves to the response
@@ -1516,27 +1212,8 @@ const methodDescriptor_Events_Subscribe = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.SubscribeRequest,
- *   !proto.catalog.Event>}
- */
-const methodInfo_Events_Subscribe = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.Event,
-  /**
-   * @param {!proto.catalog.SubscribeRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.Event.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.SubscribeRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Event>}
  *     The XHR Node Readable Stream
@@ -1553,7 +1230,7 @@ proto.catalog.EventsClient.prototype.subscribe =
 
 /**
  * @param {!proto.catalog.SubscribeRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.Event>}
  *     The XHR Node Readable Stream
@@ -1571,7 +1248,7 @@ proto.catalog.EventsPromiseClient.prototype.subscribe =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1579,7 +1256,7 @@ proto.catalog.EventsPromiseClient.prototype.subscribe =
 proto.catalog.LocksClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1597,7 +1274,7 @@ proto.catalog.LocksClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1605,7 +1282,7 @@ proto.catalog.LocksClient =
 proto.catalog.LocksPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1643,27 +1320,8 @@ const methodDescriptor_Locks_Lock = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.LockRequest,
- *   !proto.catalog.LockResponse>}
- */
-const methodInfo_Locks_Lock = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.LockResponse,
-  /**
-   * @param {!proto.catalog.LockRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.LockResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.LockRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.LockResponse>}
  *     The XHR Node Readable Stream
@@ -1680,7 +1338,7 @@ proto.catalog.LocksClient.prototype.lock =
 
 /**
  * @param {!proto.catalog.LockRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.LockResponse>}
  *     The XHR Node Readable Stream
@@ -1718,27 +1376,8 @@ const methodDescriptor_Locks_TryLock = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.catalog.LockRequest,
- *   !proto.catalog.LockResponse>}
- */
-const methodInfo_Locks_TryLock = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.catalog.LockResponse,
-  /**
-   * @param {!proto.catalog.LockRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.catalog.LockResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.catalog.LockRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.LockResponse>}
  *     The XHR Node Readable Stream
@@ -1755,7 +1394,7 @@ proto.catalog.LocksClient.prototype.tryLock =
 
 /**
  * @param {!proto.catalog.LockRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.catalog.LockResponse>}
  *     The XHR Node Readable Stream

@@ -1,11 +1,11 @@
-use clap::Clap;
+use clap::Parser;
 use log::info;
 use sqlx::postgres::PgPoolOptions;
 use std::sync::Arc;
 use tonic::transport::Server;
 use tracing_subscriber::util::SubscriberInitExt;
 
-use axum::body::BoxBody;
+use axum::{body::BoxBody, http::StatusCode, routing::get_service, Router};
 use futures::ready;
 use hyper::service::make_service_fn;
 use hyper::{Body, Request, Response};
@@ -15,6 +15,8 @@ use std::net::ToSocketAddrs;
 use std::pin::Pin;
 use std::task::Poll;
 use tower::{Service, ServiceExt};
+use tower_http::cors::{any, CorsLayer};
+use tower_http::{services::ServeDir, trace::TraceLayer};
 
 #[macro_use]
 extern crate lazy_static;
@@ -24,7 +26,7 @@ use opencore::managers;
 use opencore::services;
 use opencore::token;
 
-#[derive(Clap)]
+#[derive(Parser, Debug)]
 #[clap(version = "0.1", author = "Tino Rusch <tino.rusch@gmail.com>")]
 struct Opts {
     #[clap(short, long, default_value = "postgres://postgres:password@localhost")]
@@ -35,6 +37,8 @@ struct Opts {
     secret: String,
     #[clap(long, default_value = "127.0.0.1:3000")]
     allow_origins: Vec<String>,
+    #[clap(long, default_value = ".")]
+    static_dir: String,
 }
 
 lazy_static! {
@@ -85,7 +89,7 @@ impl ManagersContainer {
         let service_accounts =
             Arc::new(managers::service_accounts::Manager::new(pool.clone()).await?);
 
-        let groups = Arc::new(managers::groups::Manager::new(pool.clone(), users.clone()).await?);
+        let groups = Arc::new(managers::groups::Manager::new(pool.clone()).await?);
 
         Ok(Self {
             validator,
@@ -186,7 +190,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     create_admin_service_account(managers.service_accounts.clone()).await?;
 
-    let web_config = tonic_web::config().allow_origins(vec![
+    let grpc_web_config = tonic_web::config().allow_origins(vec![
         OPTS.listen.clone(),
         "http://127.0.0.1:8080".to_string(),
         "http://127.0.0.1:3000".to_string(),
@@ -199,50 +203,62 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let grpc_service = Server::builder()
         .accept_http1(true)
         .add_service(
-            web_config.enable(api::catalog::resources_server::ResourcesServer::new(
+            grpc_web_config.enable(api::catalog::resources_server::ResourcesServer::new(
                 services.resources,
             )),
         )
         .add_service(
-            web_config.enable(api::catalog::schemas_server::SchemasServer::new(
+            grpc_web_config.enable(api::catalog::schemas_server::SchemasServer::new(
                 services.schemas,
             )),
         )
         .add_service(
-            web_config.enable(api::catalog::events_server::EventsServer::new(
+            grpc_web_config.enable(api::catalog::events_server::EventsServer::new(
                 services.events,
             )),
         )
         .add_service(
-            web_config.enable(api::catalog::locks_server::LocksServer::new(services.locks)),
+            grpc_web_config.enable(api::catalog::locks_server::LocksServer::new(services.locks)),
+        )
+        .add_service(grpc_web_config.enable(
+            api::catalog::permissions_server::PermissionsServer::new(services.permissions),
+        ))
+        .add_service(
+            grpc_web_config.enable(api::idp::users_server::UsersServer::new(services.users)),
         )
         .add_service(
-            web_config.enable(api::catalog::permissions_server::PermissionsServer::new(
-                services.permissions,
-            )),
+            grpc_web_config.enable(api::idp::groups_server::GroupsServer::new(services.groups)),
         )
-        .add_service(web_config.enable(api::idp::users_server::UsersServer::new(services.users)))
-        .add_service(web_config.enable(api::idp::groups_server::GroupsServer::new(services.groups)))
-        .add_service(web_config.enable(
+        .add_service(grpc_web_config.enable(
             api::idp::service_accounts_server::ServiceAccountsServer::new(
                 services.service_accounts,
             ),
         ))
-        .add_service(
-            web_config.enable(api::idp::authentication_server::AuthenticationServer::new(
-                services.auth,
-            )),
-        )
+        .add_service(grpc_web_config.enable(
+            api::idp::authentication_server::AuthenticationServer::new(services.auth),
+        ))
         .add_service(reflection_service)
         .into_service()
         // Needed to unify body type into axum's BoxBody
         .map_response(|response| {
             let (parts, body) = response.into_parts();
-            Response::from_parts(parts, axum::body::box_body(body))
+            Response::from_parts(parts, axum::body::boxed(body))
         });
 
-    let axum_service = axum::Router::new()
-        .route("/", axum::handler::get(|| async { "Hello world!" }))
+    let axum_service = Router::new()
+        .nest(
+            "/",
+            get_service(ServeDir::new(&OPTS.static_dir)).handle_error(
+                |error: std::io::Error| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("Unhandled internal error: {}", error),
+                    )
+                },
+            ),
+        )
+        .layer(TraceLayer::new_for_http())
+        .layer(CorsLayer::new().allow_methods(any()).allow_origin(any()))
         // Needed to unify errors types from Infallible to tonic's Box<dyn std::error::Error + Send + Sync>
         .map_err(|i| match i {});
 
@@ -348,9 +364,17 @@ where
                 if ct.as_bytes() == b"application/grpc"
                     || ct.as_bytes().starts_with(b"application/grpc-web") =>
             {
+                info!(
+                    "Received grpc request, path: {}, content type {:?}",
+                    req.uri(),
+                    ct
+                );
                 HybridFuture::Grpc(self.grpc.call(req))
             }
-            _ => HybridFuture::Web(self.web.call(req)),
+            _ => {
+                info!("Received http request, path: {}", req.uri());
+                HybridFuture::Web(self.web.call(req))
+            }
         }
     }
 }

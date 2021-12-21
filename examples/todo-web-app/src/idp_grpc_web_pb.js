@@ -25,7 +25,7 @@ proto.idp = require('./idp_pb.js');
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -33,7 +33,7 @@ proto.idp = require('./idp_pb.js');
 proto.idp.UsersClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -51,7 +51,7 @@ proto.idp.UsersClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -59,7 +59,7 @@ proto.idp.UsersClient =
 proto.idp.UsersPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -97,30 +97,11 @@ const methodDescriptor_Users_Create = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.CreateUserRequest,
- *   !proto.idp.User>}
- */
-const methodInfo_Users_Create = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.User,
-  /**
-   * @param {!proto.idp.CreateUserRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.User.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.CreateUserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.User)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.User)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>|undefined}
  *     The XHR Node Readable Stream
@@ -139,7 +120,7 @@ proto.idp.UsersClient.prototype.create =
 /**
  * @param {!proto.idp.CreateUserRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.User>}
  *     Promise that resolves to the response
@@ -177,30 +158,11 @@ const methodDescriptor_Users_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.GetUserRequest,
- *   !proto.idp.User>}
- */
-const methodInfo_Users_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.User,
-  /**
-   * @param {!proto.idp.GetUserRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.User.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.GetUserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.User)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.User)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>|undefined}
  *     The XHR Node Readable Stream
@@ -219,7 +181,7 @@ proto.idp.UsersClient.prototype.get =
 /**
  * @param {!proto.idp.GetUserRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.User>}
  *     Promise that resolves to the response
@@ -257,30 +219,11 @@ const methodDescriptor_Users_Update = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.UpdateUserRequest,
- *   !proto.idp.User>}
- */
-const methodInfo_Users_Update = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.User,
-  /**
-   * @param {!proto.idp.UpdateUserRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.User.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.UpdateUserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.User)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.User)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>|undefined}
  *     The XHR Node Readable Stream
@@ -299,7 +242,7 @@ proto.idp.UsersClient.prototype.update =
 /**
  * @param {!proto.idp.UpdateUserRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.User>}
  *     Promise that resolves to the response
@@ -337,30 +280,11 @@ const methodDescriptor_Users_Delete = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.DeleteUserRequest,
- *   !proto.idp.User>}
- */
-const methodInfo_Users_Delete = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.User,
-  /**
-   * @param {!proto.idp.DeleteUserRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.User.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.DeleteUserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.User)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.User)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>|undefined}
  *     The XHR Node Readable Stream
@@ -379,7 +303,7 @@ proto.idp.UsersClient.prototype.delete =
 /**
  * @param {!proto.idp.DeleteUserRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.User>}
  *     Promise that resolves to the response
@@ -417,27 +341,8 @@ const methodDescriptor_Users_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.ListUsersRequest,
- *   !proto.idp.User>}
- */
-const methodInfo_Users_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.User,
-  /**
-   * @param {!proto.idp.ListUsersRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.User.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.ListUsersRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>}
  *     The XHR Node Readable Stream
@@ -454,7 +359,7 @@ proto.idp.UsersClient.prototype.list =
 
 /**
  * @param {!proto.idp.ListUsersRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.User>}
  *     The XHR Node Readable Stream
@@ -472,7 +377,7 @@ proto.idp.UsersPromiseClient.prototype.list =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -480,7 +385,7 @@ proto.idp.UsersPromiseClient.prototype.list =
 proto.idp.ServiceAccountsClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -498,7 +403,7 @@ proto.idp.ServiceAccountsClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -506,7 +411,7 @@ proto.idp.ServiceAccountsClient =
 proto.idp.ServiceAccountsPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -544,30 +449,11 @@ const methodDescriptor_ServiceAccounts_Create = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.CreateServiceAccountRequest,
- *   !proto.idp.CreateServiceAccountResponse>}
- */
-const methodInfo_ServiceAccounts_Create = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.CreateServiceAccountResponse,
-  /**
-   * @param {!proto.idp.CreateServiceAccountRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.CreateServiceAccountResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.CreateServiceAccountRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.CreateServiceAccountResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.CreateServiceAccountResponse)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.CreateServiceAccountResponse>|undefined}
  *     The XHR Node Readable Stream
@@ -586,7 +472,7 @@ proto.idp.ServiceAccountsClient.prototype.create =
 /**
  * @param {!proto.idp.CreateServiceAccountRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.CreateServiceAccountResponse>}
  *     Promise that resolves to the response
@@ -624,30 +510,11 @@ const methodDescriptor_ServiceAccounts_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.GetServiceAccountRequest,
- *   !proto.idp.ServiceAccount>}
- */
-const methodInfo_ServiceAccounts_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.ServiceAccount,
-  /**
-   * @param {!proto.idp.GetServiceAccountRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.ServiceAccount.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.GetServiceAccountRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.ServiceAccount)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.ServiceAccount)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.ServiceAccount>|undefined}
  *     The XHR Node Readable Stream
@@ -666,7 +533,7 @@ proto.idp.ServiceAccountsClient.prototype.get =
 /**
  * @param {!proto.idp.GetServiceAccountRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.ServiceAccount>}
  *     Promise that resolves to the response
@@ -704,30 +571,11 @@ const methodDescriptor_ServiceAccounts_Update = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.UpdateServiceAccountRequest,
- *   !proto.idp.UpdateServiceAccountResponse>}
- */
-const methodInfo_ServiceAccounts_Update = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.UpdateServiceAccountResponse,
-  /**
-   * @param {!proto.idp.UpdateServiceAccountRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.UpdateServiceAccountResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.UpdateServiceAccountRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.UpdateServiceAccountResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.UpdateServiceAccountResponse)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.UpdateServiceAccountResponse>|undefined}
  *     The XHR Node Readable Stream
@@ -746,7 +594,7 @@ proto.idp.ServiceAccountsClient.prototype.update =
 /**
  * @param {!proto.idp.UpdateServiceAccountRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.UpdateServiceAccountResponse>}
  *     Promise that resolves to the response
@@ -784,30 +632,11 @@ const methodDescriptor_ServiceAccounts_Delete = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.DeleteServiceAccountRequest,
- *   !proto.idp.ServiceAccount>}
- */
-const methodInfo_ServiceAccounts_Delete = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.ServiceAccount,
-  /**
-   * @param {!proto.idp.DeleteServiceAccountRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.ServiceAccount.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.DeleteServiceAccountRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.ServiceAccount)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.ServiceAccount)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.ServiceAccount>|undefined}
  *     The XHR Node Readable Stream
@@ -826,7 +655,7 @@ proto.idp.ServiceAccountsClient.prototype.delete =
 /**
  * @param {!proto.idp.DeleteServiceAccountRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.ServiceAccount>}
  *     Promise that resolves to the response
@@ -864,27 +693,8 @@ const methodDescriptor_ServiceAccounts_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.ListServiceAccountsRequest,
- *   !proto.idp.ServiceAccount>}
- */
-const methodInfo_ServiceAccounts_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.ServiceAccount,
-  /**
-   * @param {!proto.idp.ListServiceAccountsRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.ServiceAccount.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.ListServiceAccountsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.ServiceAccount>}
  *     The XHR Node Readable Stream
@@ -901,7 +711,7 @@ proto.idp.ServiceAccountsClient.prototype.list =
 
 /**
  * @param {!proto.idp.ListServiceAccountsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.ServiceAccount>}
  *     The XHR Node Readable Stream
@@ -919,7 +729,7 @@ proto.idp.ServiceAccountsPromiseClient.prototype.list =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -927,7 +737,7 @@ proto.idp.ServiceAccountsPromiseClient.prototype.list =
 proto.idp.AuthenticationClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -945,7 +755,7 @@ proto.idp.AuthenticationClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -953,7 +763,7 @@ proto.idp.AuthenticationClient =
 proto.idp.AuthenticationPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -991,30 +801,11 @@ const methodDescriptor_Authentication_Login = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.LoginRequest,
- *   !proto.idp.LoginResponse>}
- */
-const methodInfo_Authentication_Login = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.LoginResponse,
-  /**
-   * @param {!proto.idp.LoginRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.LoginResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.LoginRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.LoginResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.LoginResponse)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.LoginResponse>|undefined}
  *     The XHR Node Readable Stream
@@ -1033,7 +824,7 @@ proto.idp.AuthenticationClient.prototype.login =
 /**
  * @param {!proto.idp.LoginRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.LoginResponse>}
  *     Promise that resolves to the response
@@ -1071,30 +862,11 @@ const methodDescriptor_Authentication_Refresh = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.RefreshRequest,
- *   !proto.idp.LoginResponse>}
- */
-const methodInfo_Authentication_Refresh = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.LoginResponse,
-  /**
-   * @param {!proto.idp.RefreshRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.LoginResponse.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.RefreshRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.LoginResponse)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.LoginResponse)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.LoginResponse>|undefined}
  *     The XHR Node Readable Stream
@@ -1113,7 +885,7 @@ proto.idp.AuthenticationClient.prototype.refresh =
 /**
  * @param {!proto.idp.RefreshRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.LoginResponse>}
  *     Promise that resolves to the response
@@ -1131,7 +903,7 @@ proto.idp.AuthenticationPromiseClient.prototype.refresh =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1139,7 +911,7 @@ proto.idp.AuthenticationPromiseClient.prototype.refresh =
 proto.idp.GroupsClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1157,7 +929,7 @@ proto.idp.GroupsClient =
 /**
  * @param {string} hostname
  * @param {?Object} credentials
- * @param {?Object} options
+ * @param {?grpc.web.ClientOptions} options
  * @constructor
  * @struct
  * @final
@@ -1165,7 +937,7 @@ proto.idp.GroupsClient =
 proto.idp.GroupsPromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
-  options['format'] = 'text';
+  options.format = 'text';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -1203,30 +975,11 @@ const methodDescriptor_Groups_Create = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.CreateGroupRequest,
- *   !proto.idp.Group>}
- */
-const methodInfo_Groups_Create = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.Group,
-  /**
-   * @param {!proto.idp.CreateGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.Group.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.CreateGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.Group)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.Group)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>|undefined}
  *     The XHR Node Readable Stream
@@ -1245,7 +998,7 @@ proto.idp.GroupsClient.prototype.create =
 /**
  * @param {!proto.idp.CreateGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.Group>}
  *     Promise that resolves to the response
@@ -1283,30 +1036,11 @@ const methodDescriptor_Groups_Get = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.GetGroupRequest,
- *   !proto.idp.Group>}
- */
-const methodInfo_Groups_Get = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.Group,
-  /**
-   * @param {!proto.idp.GetGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.Group.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.GetGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.Group)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.Group)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>|undefined}
  *     The XHR Node Readable Stream
@@ -1325,7 +1059,7 @@ proto.idp.GroupsClient.prototype.get =
 /**
  * @param {!proto.idp.GetGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.Group>}
  *     Promise that resolves to the response
@@ -1363,30 +1097,11 @@ const methodDescriptor_Groups_Update = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.UpdateGroupRequest,
- *   !proto.idp.Group>}
- */
-const methodInfo_Groups_Update = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.Group,
-  /**
-   * @param {!proto.idp.UpdateGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.Group.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.UpdateGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.Group)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.Group)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>|undefined}
  *     The XHR Node Readable Stream
@@ -1405,7 +1120,7 @@ proto.idp.GroupsClient.prototype.update =
 /**
  * @param {!proto.idp.UpdateGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.Group>}
  *     Promise that resolves to the response
@@ -1443,30 +1158,11 @@ const methodDescriptor_Groups_Delete = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.DeleteGroupRequest,
- *   !proto.idp.Group>}
- */
-const methodInfo_Groups_Delete = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.Group,
-  /**
-   * @param {!proto.idp.DeleteGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.Group.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.DeleteGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.idp.Group)}
+ * @param {function(?grpc.web.RpcError, ?proto.idp.Group)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>|undefined}
  *     The XHR Node Readable Stream
@@ -1485,7 +1181,7 @@ proto.idp.GroupsClient.prototype.delete =
 /**
  * @param {!proto.idp.DeleteGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.idp.Group>}
  *     Promise that resolves to the response
@@ -1523,27 +1219,8 @@ const methodDescriptor_Groups_List = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.ListGroupsRequest,
- *   !proto.idp.Group>}
- */
-const methodInfo_Groups_List = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.Group,
-  /**
-   * @param {!proto.idp.ListGroupsRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.Group.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.ListGroupsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>}
  *     The XHR Node Readable Stream
@@ -1560,7 +1237,7 @@ proto.idp.GroupsClient.prototype.list =
 
 /**
  * @param {!proto.idp.ListGroupsRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.Group>}
  *     The XHR Node Readable Stream
@@ -1598,30 +1275,11 @@ const methodDescriptor_Groups_AddUser = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.AddUserToGroupRequest,
- *   !proto.google.protobuf.Empty>}
- */
-const methodInfo_Groups_AddUser = new grpc.web.AbstractClientBase.MethodInfo(
-  google_protobuf_empty_pb.Empty,
-  /**
-   * @param {!proto.idp.AddUserToGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  google_protobuf_empty_pb.Empty.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.AddUserToGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.google.protobuf.Empty)}
+ * @param {function(?grpc.web.RpcError, ?proto.google.protobuf.Empty)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.google.protobuf.Empty>|undefined}
  *     The XHR Node Readable Stream
@@ -1640,7 +1298,7 @@ proto.idp.GroupsClient.prototype.addUser =
 /**
  * @param {!proto.idp.AddUserToGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.google.protobuf.Empty>}
  *     Promise that resolves to the response
@@ -1678,30 +1336,11 @@ const methodDescriptor_Groups_DelUser = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.DelUserFromGroupRequest,
- *   !proto.google.protobuf.Empty>}
- */
-const methodInfo_Groups_DelUser = new grpc.web.AbstractClientBase.MethodInfo(
-  google_protobuf_empty_pb.Empty,
-  /**
-   * @param {!proto.idp.DelUserFromGroupRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  google_protobuf_empty_pb.Empty.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.DelUserFromGroupRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.google.protobuf.Empty)}
+ * @param {function(?grpc.web.RpcError, ?proto.google.protobuf.Empty)}
  *     callback The callback function(error, response)
  * @return {!grpc.web.ClientReadableStream<!proto.google.protobuf.Empty>|undefined}
  *     The XHR Node Readable Stream
@@ -1720,7 +1359,7 @@ proto.idp.GroupsClient.prototype.delUser =
 /**
  * @param {!proto.idp.DelUserFromGroupRequest} request The
  *     request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.google.protobuf.Empty>}
  *     Promise that resolves to the response
@@ -1758,27 +1397,8 @@ const methodDescriptor_Groups_ListMembers = new grpc.web.MethodDescriptor(
 
 
 /**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.idp.ListGroupMembersRequest,
- *   !proto.idp.GroupMember>}
- */
-const methodInfo_Groups_ListMembers = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.idp.GroupMember,
-  /**
-   * @param {!proto.idp.ListGroupMembersRequest} request
-   * @return {!Uint8Array}
-   */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.idp.GroupMember.deserializeBinary
-);
-
-
-/**
  * @param {!proto.idp.ListGroupMembersRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.GroupMember>}
  *     The XHR Node Readable Stream
@@ -1795,7 +1415,7 @@ proto.idp.GroupsClient.prototype.listMembers =
 
 /**
  * @param {!proto.idp.ListGroupMembersRequest} request The request proto
- * @param {?Object<string, string>} metadata User defined
+ * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!grpc.web.ClientReadableStream<!proto.idp.GroupMember>}
  *     The XHR Node Readable Stream

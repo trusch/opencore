@@ -12,14 +12,15 @@ path = "src/main.rs"
 async-stream = "0.3"
 
 tower = { version = "0.4", features = ["full"] }
+tower-http = { version = "0.2", features = ["full"] }
 hyper = { version = "0.14", features = ["full"] }
 pin-project = "1"
-axum = "0.2"
+axum = "0.4"
 
-tonic = "0.5"
-tonic-web = "0.1"
-prost = "0.8"
-prost-types = "0.8"
+tonic = "0.6"
+tonic-web = "0.2"
+prost = "0.9"
+prost-types = "0.9"
 pwhash = "1"
 rand = "0.8"
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "postgres", "uuid", "json", "chrono" ] }
@@ -33,19 +34,17 @@ serde_json = "1.0"
 json-patch = "*"
 jsonwebtoken = "7"
 serde = {version = "1.0", features = ["derive"] }
-jsonschema = "0.6"
-clap = "3.0.0-beta.2"
+jsonschema = "0.13"
+clap = {version = "3.0.0-rc.7", features = ["derive"]}
 lazy_static = "1.4"
-tonic-reflection = "0.2"
+tonic-reflection = "0.3"
 log = "0.4"
-env_logger = "0.8"
 sea-query = { version = "^0", features = ["with-json", "with-uuid", "sqlx-postgres"] }
 tracing = "0.1"
-tracing-subscriber = "0.2"
-tracing-opentelemetry = "0.15"
+tracing-subscriber = {version = "0.3", features = ["std","fmt","env-filter"]}
+tracing-opentelemetry = "0.16"
 opentelemetry = { version = "*", features = ["rt-tokio"] }
 opentelemetry-jaeger = { version = "*", features = ["rt-tokio", "collector_client", "reqwest_collector_client"] }
-lettre = "0.10.0-rc.3"
 
 [build-dependencies]
-tonic-build = "0.5"
+tonic-build = "0.6"

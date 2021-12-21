@@ -8,7 +8,6 @@ use tokio::sync::mpsc;
 use tonic::Status;
 
 use crate::api;
-use crate::managers;
 use crate::token;
 
 use api::idp::{Group, GroupMember};
@@ -33,15 +32,11 @@ struct GroupMemberRow {
 #[derive(Clone)]
 pub struct Manager {
     pool: Arc<sqlx::PgPool>,
-    users_mgr: Arc<managers::users::Manager>,
 }
 
 impl Manager {
-    pub async fn new(
-        pool: Arc<sqlx::PgPool>,
-        users_mgr: Arc<managers::users::Manager>,
-    ) -> Result<Manager, sqlx::Error> {
-        let res = Manager { pool, users_mgr };
+    pub async fn new(pool: Arc<sqlx::PgPool>) -> Result<Manager, sqlx::Error> {
+        let res = Manager { pool };
         res.init_tables().await?;
         Ok(res)
     }

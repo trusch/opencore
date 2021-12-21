@@ -11,28 +11,28 @@ export class ResourcesClient {
   create(
     request: catalog_pb.CreateResourceRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Resource) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Resource>;
 
   get(
     request: catalog_pb.GetResourceRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Resource) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Resource>;
 
   update(
     request: catalog_pb.UpdateResourceRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Resource) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Resource>;
 
   delete(
     request: catalog_pb.DeleteResourceRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Resource) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Resource>;
 
@@ -51,28 +51,28 @@ export class SchemasClient {
   create(
     request: catalog_pb.CreateSchemaRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Schema) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Schema>;
 
   get(
     request: catalog_pb.GetSchemaRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Schema) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Schema>;
 
   update(
     request: catalog_pb.UpdateSchemaRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Schema) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Schema>;
 
   delete(
     request: catalog_pb.DeleteSchemaRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Schema) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Schema>;
 
@@ -91,21 +91,21 @@ export class PermissionsClient {
   share(
     request: catalog_pb.ShareRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.PermissionInfo) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.PermissionInfo>;
 
   unshare(
     request: catalog_pb.UnshareRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.PermissionInfo) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.PermissionInfo>;
 
   get(
     request: catalog_pb.GetPermissionInfoRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.PermissionInfo) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.PermissionInfo>;
 
@@ -117,7 +117,7 @@ export class PermissionsClient {
   check(
     request: catalog_pb.PermissionCheckRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.PermissionCheckResponse) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.PermissionCheckResponse>;
 
@@ -131,7 +131,7 @@ export class EventsClient {
   publish(
     request: catalog_pb.PublishRequest,
     metadata: grpcWeb.Metadata | undefined,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: catalog_pb.Event) => void
   ): grpcWeb.ClientReadableStream<catalog_pb.Event>;
 

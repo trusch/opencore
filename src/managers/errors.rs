@@ -63,8 +63,8 @@ impl<T> From<tokio::sync::mpsc::error::SendError<T>> for Error {
     }
 }
 
-impl From<jsonschema::CompilationError> for Error {
-    fn from(item: jsonschema::CompilationError) -> Self {
+impl<'a> From<jsonschema::ValidationError<'a>> for Error {
+    fn from(item: jsonschema::ValidationError<'a>) -> Self {
         error!("{}", item);
         Error::InvalidArgument(format!("failed to compile json schema: {}", item))
     }

@@ -631,6 +631,9 @@ export class LockResponse extends jspb.Message {
   getLockId(): string;
   setLockId(value: string): LockResponse;
 
+  getFencingToken(): number;
+  setFencingToken(value: number): LockResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LockResponse.AsObject;
   static toObject(includeInstance: boolean, msg: LockResponse): LockResponse.AsObject;
@@ -642,6 +645,7 @@ export class LockResponse extends jspb.Message {
 export namespace LockResponse {
   export type AsObject = {
     lockId: string,
+    fencingToken: number,
   }
 }
 

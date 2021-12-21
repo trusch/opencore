@@ -57,12 +57,14 @@ run: .image
 	podman run -d --pod opencore --name jaeger \
 		jaegertracing/all-in-one:latest
 	podman run -d --pod opencore --name core \
-		-e RUST_LOG=debug \
+		-e RUST_LOG=info \
 		-e RUST_BACKTRACE=1 \
+		-v ./examples/todo-web-app/build:/static \
 		${IMAGE} /bin/opencore \
 			--listen 0.0.0.0:3001 \
 			--database "postgres://postgres:password@127.0.0.1" \
-			--secret secret
+			--secret secret \
+			--static-dir /static
 
 DB_VOLUME_NAME="opencore-data"
 run-persistent:
