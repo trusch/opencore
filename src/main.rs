@@ -194,9 +194,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         OPTS.listen.clone(),
         "http://127.0.0.1:8080".to_string(),
         "http://127.0.0.1:3000".to_string(),
+        "http://127.0.0.1:3001".to_string(),
         "http://127.0.0.1".to_string(),
         "http://localhost:8080".to_string(),
         "http://localhost:3000".to_string(),
+        "http://localhost:3001".to_string(),
         "http://localhost".to_string(),
     ]);
 

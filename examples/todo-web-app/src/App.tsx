@@ -23,6 +23,12 @@ import { AuthenticationPromiseClient } from "./idp_grpc_web_pb";
 import { ResourcesPromiseClient } from "./catalog_grpc_web_pb";
 import { Error } from "grpc-web";
 
+declare global {
+  interface Window {
+    __GRPCWEB_DEVTOOLS__: any; // 👈️ turn off type checking
+  }
+}
+
 type Todo = {
     id: string;
     subject: string;
@@ -50,6 +56,13 @@ class App extends React.Component {
     this.refreshToken = "";
     this.subjectInputRef = React.createRef();
     this.descriptionInputRef = React.createRef();
+    
+    // enable grpc-web dev tools if available
+    const enableDevTools = window.__GRPCWEB_DEVTOOLS__ || (() => {});
+    enableDevTools([
+      this.authClient,
+      this.resourceClient,
+    ]);
   }
 
   componentDidMount() {

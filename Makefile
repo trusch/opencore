@@ -1,7 +1,7 @@
 IMAGE=containers.trusch.io/opencore/core:latest
 BASE_IMAGE=gcr.io/distroless/cc-debian11:latest
 BUILD_IMAGE=containers.trusch.io/opencore/builder
-BUILD_BASE_IMAGE=docker.io/library/rust:1.57-bullseye
+BUILD_BASE_IMAGE=docker.io/library/rust:1.60-bullseye
 DB_VOLUME=--tmpfs=/var/lib/postgresql/data
 
 # use mold for faster linking
@@ -51,11 +51,10 @@ run: .image
 		-p 16686:16686
 	podman run -d --pod opencore --name postgres \
 		-e POSTGRES_PASSWORD=password \
-		--add-host localhost:127.0.0.1 \
 		$(DB_VOLUME) \
-		postgres:latest -c log_statement=all
+		docker.io/postgres:latest -c log_statement=all
 	podman run -d --pod opencore --name jaeger \
-		jaegertracing/all-in-one:latest
+		docker.io/jaegertracing/all-in-one:latest
 	podman run -d --pod opencore --name core \
 		-e RUST_LOG=info \
 		-e RUST_BACKTRACE=1 \

@@ -3069,7 +3069,7 @@ browser-launcher@~0.3.4:
 browser-list@^4.16.5:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/browser-list/-/browser-list-0.0.3.tgz#d7933d3a67e1f0e01f1321aed7aaf6e25d52b863"
-  integrity sha1-15M9Omfh8OAfEyGu16r24l1SuGM=
+  integrity sha512-QGkSK3V5xZv8kT03RsoAsmwqHuV5jJovwMt5rFJSDkli1akLjR0YBEceYwEUTCuKVmHuHxjn8AHHZAagk9H7Kg==
   dependencies:
     browser-launcher "~0.3.4"
     cli-table "~0.3.0"
