@@ -1,5 +1,4 @@
 use futures::Stream;
-use sqlx::types::Uuid;
 use std::pin::Pin;
 use std::sync::Arc;
 use tonic::{Request, Response, Status};
@@ -65,12 +64,14 @@ impl ServiceAccounts for Service {
             ));
         }
 
+        use uuid::Uuid;
         let service_account_id = match Uuid::parse_str(&request.get_ref().id) {
             Ok(id) => id,
-            Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
+            Err(_) => Uuid::new_v5(&uuid::Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
-
-        let res = self.mgr.get(&claims, &service_account_id).await?;
+        let id = sqlx::types::Uuid::from_bytes(service_account_id.into_bytes());
+        
+        let res = self.mgr.get(&claims, &id).await?;
 
         Ok(Response::new(res))
     }
@@ -88,10 +89,13 @@ impl ServiceAccounts for Service {
             ));
         }
 
+        use uuid::Uuid;
         let id = match Uuid::parse_str(&request.get_ref().id) {
             Ok(id) => id,
             Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
+        let id = sqlx::types::Uuid::from_bytes(id.into_bytes());
+
 
         let res = self.mgr.delete(&claims, &id).await?;
 
@@ -112,10 +116,13 @@ impl ServiceAccounts for Service {
         }
 
         let r = request.get_ref();
+
+        use uuid::Uuid;
         let id = match Uuid::parse_str(&r.id) {
             Ok(id) => id,
             Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, request.get_ref().id.as_bytes()),
         };
+        let id = sqlx::types::Uuid::from_bytes(id.into_bytes());
 
         let result = self.mgr.update(&claims, &id).await?;
         Ok(Response::new(result))

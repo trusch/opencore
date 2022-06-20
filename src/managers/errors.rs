@@ -35,6 +35,13 @@ impl From<sqlx::Error> for Error {
     }
 }
 
+impl From<std::io::Error> for Error {
+    fn from(item: std::io::Error) -> Self {
+        error!("{}", item);
+        Error::Database(format!("failed to interact with the filesystem: {}", item))
+    }
+}
+
 impl From<serde_json::Error> for Error {
     fn from(item: serde_json::Error) -> Self {
         error!("{}", item);

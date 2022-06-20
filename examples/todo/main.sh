@@ -6,11 +6,11 @@ source ${BASEDIR}/../common/login_admin.sh
 source ${BASEDIR}/../common/functions.sh
 
 echo "Create alice@localhost"
-payload=$(jq -n '{name: "alice", email: "alice@localhost", password: "password"}')
+payload=$(jq -n '{name: "alice", external_id: "alice@localhost", password: "password"}')
 alice=$(call_opencore idp.Users/Create "$payload")
 
 echo "Create bob@localhost"
-payload=$(jq -n '{name: "bob", email: "bob@localhost", password: "password"}')
+payload=$(jq -n '{name: "bob", external_id: "bob@localhost", password: "password"}')
 bob=$(call_opencore idp.Users/Create "$payload")
 
 echo "Create schema 'todo'"
@@ -42,7 +42,7 @@ payload=$(jq -n --arg schema "$schema" '{kind: "todo", data: $schema}')
 schema=$(call_opencore catalog.Schemas/Create "$payload")
 
 echo "Login as alice"
-payload=$(jq -n '{email: "alice@localhost", password: "password"}')
+payload=$(jq -n '{external_id: "alice@localhost", password: "password"}')
 export TOKEN=$(call_opencore idp.Authentication/Login "$payload" | jq -r .accessToken)
 
 echo "Create family group"
@@ -96,7 +96,7 @@ payload=$(jq -n --arg data "$patch" --arg id "$id" '{id: $id, data: $data}')
 call_opencore catalog.Resources/Update "$payload" | jq -r .data | jq .
 
 echo "Bob comes home and checks for unfinished tasks"
-payload=$(jq -n '{email: "bob@localhost", password: "password"}')
+payload=$(jq -n '{external_id: "bob@localhost", password: "password"}')
 export TOKEN=$(call_opencore idp.Authentication/Login "$payload" | jq -r .accessToken)
 
 echo "List all unfinished tasks related to the house"

@@ -1,0 +1,1 @@
+{"buildTargets":["bin/opencore","docker-build","image","run","run-persistent","run-with-list-test-volume","stop"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

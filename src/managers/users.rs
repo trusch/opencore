@@ -17,7 +17,7 @@ use token::Claims;
 struct UserRow {
     id: Uuid,
     name: String,
-    email: String,
+    external_id: String,
     is_admin: bool,
     password_hash: String,
     created_at: chrono::DateTime<chrono::Utc>,
@@ -26,7 +26,9 @@ struct UserRow {
 
 #[derive(Debug)]
 pub enum GetSelector {
+    ByExternalId(String),
     ByEmail(String),
+    ByDid(String),
     ById(Uuid),
 }
 
@@ -48,7 +50,7 @@ impl Manager {
             users(
                 id UUID PRIMARY KEY,
                 name TEXT UNIQUE,
-                email TEXT UNIQUE,
+                external_id TEXT UNIQUE,
                 is_admin BOOL,
                 password_hash TEXT,
                 created_at TIMESTAMPTZ DEFAULT now(),
@@ -65,7 +67,7 @@ impl Manager {
         &self,
         claims: &Claims,
         name: &str,
-        email: &str,
+        external_id: &str,
         is_admin: &bool,
         password: &str,
     ) -> Result<User, Status> {
@@ -75,14 +77,14 @@ impl Manager {
             ));
         }
 
-        let id = Uuid::new_v4();
+        let id = Uuid::from_bytes(uuid::Uuid::new_v4().into_bytes());
 
         let now = chrono::Utc::now();
 
         let res = User {
             id: id.to_hyphenated().to_string(),
             name: name.to_string(),
-            email: email.to_string(),
+            external_id: external_id.to_string(),
             is_admin: *is_admin,
             password_hash: bcrypt::hash(password).unwrap(),
             created_at: Some(prost_types::Timestamp {
@@ -95,10 +97,10 @@ impl Manager {
             }),
         };
 
-        match sqlx::query("INSERT INTO users(id, name, email, is_admin, password_hash, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7)").
+        match sqlx::query("INSERT INTO users(id, name, external_id, is_admin, password_hash, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7)").
             bind(&id).
             bind(&res.name).
-            bind(&res.email).
+            bind(&res.external_id).
             bind(&res.is_admin).
             bind(&res.password_hash).
             bind(now).
@@ -114,14 +116,15 @@ impl Manager {
     }
 
     #[tracing::instrument(name = "mgr::users::get", skip(self))]
-    pub async fn get(&self, selector: GetSelector) -> Result<User, Status> {
+    pub async fn get(&self, claims: &Claims, selector: GetSelector) -> Result<User, Status> {
+        
         let filter: String;
         let argument: String;
 
         match selector {
-            GetSelector::ByEmail(email) => {
-                filter = "email = $1".into();
-                argument = email;
+            GetSelector::ByExternalId(id) | GetSelector::ByEmail(id)|  GetSelector::ByDid(id) => {
+                filter = "external_id = $1".into();
+                argument = id;
             }
             GetSelector::ById(id) => {
                 filter = "id::TEXT = $1".into();
@@ -129,7 +132,7 @@ impl Manager {
             }
         };
 
-        let query = format!("SELECT id, name, email, is_admin, password_hash, created_at, updated_at FROM users WHERE {}", filter);
+        let query = format!("SELECT id, name, external_id, is_admin, password_hash, created_at, updated_at FROM users WHERE {}", filter);
 
         let row: UserRow = match sqlx::query_as(&query)
             .bind(&argument)
@@ -145,7 +148,7 @@ impl Manager {
         let res = User {
             id: row.id.to_hyphenated().to_string(),
             name: row.name,
-            email: row.email,
+            external_id: row.external_id,
             is_admin: row.is_admin,
             password_hash: row.password_hash,
             created_at: Some(prost_types::Timestamp {
@@ -158,6 +161,10 @@ impl Manager {
             }),
         };
 
+        if !claims.adm && !(claims.sub == res.id) {
+            return Err(Status::permission_denied("you are not allowed to get this user"))
+        }
+
         Ok(res)
     }
 
@@ -167,7 +174,7 @@ impl Manager {
             return Err(Status::permission_denied("only admins can delete users"));
         }
 
-        let res = self.get(GetSelector::ById(*id)).await?;
+        let res = self.get(claims, GetSelector::ById(*id)).await?;
 
         match sqlx::query("DELETE FROM Users WHERE id = $1")
             .bind(&id)
@@ -189,7 +196,6 @@ impl Manager {
         claims: &Claims,
         id: &Uuid,
         name: &str,
-        email: &str,
         password: &str,
     ) -> Result<User, Status> {
         if !claims.adm && claims.sub != id.to_hyphenated().to_string() {
@@ -198,15 +204,10 @@ impl Manager {
             ));
         }
 
-        let mut user = self.get(GetSelector::ById(*id)).await?;
+        let mut user = self.get(claims, GetSelector::ById(*id)).await?;
 
         let now = chrono::Utc::now();
 
-        let email = if !email.is_empty() {
-            email
-        } else {
-            &user.email
-        };
         let name = if !name.is_empty() { name } else { &user.name };
         let password_hash = if !password.is_empty() {
             bcrypt::hash(password).unwrap()
@@ -214,9 +215,8 @@ impl Manager {
             user.password_hash.clone()
         };
 
-        match sqlx::query("UPDATE users SET name = $1, email = $2, password_hash: $3 updated_at = $4 WHERE id = $5").
+        match sqlx::query("UPDATE users SET name = $1, password_hash: $2 updated_at = $3 WHERE id = $4").
             bind(&name).
-            bind(&email).
             bind(&password_hash).
             bind(&now).
             bind(id).
@@ -229,7 +229,6 @@ impl Manager {
 
         user.name = name.to_string();
         user.password_hash = password_hash;
-        user.email = email.to_string();
         user.updated_at = Some(prost_types::Timestamp {
             seconds: now.timestamp(),
             nanos: 0,
@@ -246,7 +245,7 @@ impl Manager {
         let (tx, rx) = mpsc::channel(4);
         let pool = self.pool.clone();
         tokio::spawn(async move {
-            let mut rows = sqlx::query_as("SELECT id, name, email, is_admin, password_hash, created_at, updated_at FROM users;").fetch(pool.deref());
+            let mut rows = sqlx::query_as("SELECT id, name, external_id, is_admin, password_hash, created_at, updated_at FROM users;").fetch(pool.deref());
             loop {
                 let row: UserRow = match rows.try_next().await {
                     Ok(row) => match row {
@@ -262,7 +261,7 @@ impl Manager {
                 let res = User {
                     id: row.id.to_hyphenated().to_string(),
                     name: row.name,
-                    email: row.email,
+                    external_id: row.external_id,
                     is_admin: row.is_admin,
                     password_hash: row.password_hash,
                     created_at: Some(prost_types::Timestamp {

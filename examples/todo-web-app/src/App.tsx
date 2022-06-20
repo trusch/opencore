@@ -16,16 +16,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import moment  from 'moment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import { LoginRequest, RefreshRequest } from "./idp_pb";
+import { LoginRequest, RefreshRequest, DidLogin, GetUserRequest } from "./idp_pb";
 import { DeleteResourceRequest, ListResourcesRequest, Resource, UpdateResourceRequest, CreateResourceRequest } from "./catalog_pb";
-import { AuthenticationPromiseClient } from "./idp_grpc_web_pb";
+import { AuthenticationPromiseClient, UsersPromiseClient } from "./idp_grpc_web_pb";
 import { ResourcesPromiseClient } from "./catalog_grpc_web_pb";
 import { Error } from "grpc-web";
 
 declare global {
   interface Window {
     __GRPCWEB_DEVTOOLS__: any; // 👈️ turn off type checking
+    kilt: any;
   }
 }
 
@@ -40,22 +42,28 @@ type Todo = {
 class App extends React.Component {
   authClient: AuthenticationPromiseClient;
   resourceClient: ResourcesPromiseClient;
+  userClient: UsersPromiseClient;
   accessToken: string;
   refreshToken: string;
   subjectInputRef: React.RefObject<HTMLInputElement>;
   descriptionInputRef: React.RefObject<HTMLInputElement>;
+  refreshWorker: any;
+
   state = {
     todos: new Array<Todo>(),
+    name: '',
   };
 
   constructor(props: any) {
     super(props);
     this.authClient = new AuthenticationPromiseClient("http://127.0.0.1:3001", null, null);
     this.resourceClient = new ResourcesPromiseClient("http://127.0.0.1:3001", null, null);
+    this.userClient = new UsersPromiseClient("http://127.0.0.1:3001", null, null);
     this.accessToken = "";
     this.refreshToken = "";
     this.subjectInputRef = React.createRef();
     this.descriptionInputRef = React.createRef();
+    this.refreshWorker = null;
     
     // enable grpc-web dev tools if available
     const enableDevTools = window.__GRPCWEB_DEVTOOLS__ || (() => {});
@@ -66,17 +74,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.login().then(this.listTodos);
+    this.loginWithDid().then(this.listTodos);
   }
 
   login = async (): Promise<void> => {
     const req = new LoginRequest();
-    req.setEmail("alice@localhost");
+    req.setExternalId("alice@localhost");
     req.setPassword("password");
     const loginResponse = await this.authClient.login(req, {});
     this.accessToken = loginResponse.getAccessToken();
     this.refreshToken = loginResponse.getRefreshToken();
-    setInterval(this.refresh, 1000 * 60);
+    this.refreshWorker = setInterval(this.refresh, 1000 * 60);
   }
 
   refresh = async (): Promise<void> => {
@@ -85,6 +93,41 @@ class App extends React.Component {
     const refreshResponse = await this.authClient.refresh(req, {});
     this.accessToken = refreshResponse.getAccessToken();
     this.refreshToken = refreshResponse.getRefreshToken();
+  }
+
+  loginWithDid = async (): Promise<void> => {
+    // wait for sporran -.-
+    await new Promise(r => setTimeout(r, 500));
+
+    const didLoginMsg = new DidLogin();
+    const msg = "I want to login!";
+    didLoginMsg.setMessage(msg);   
+    
+    const result = await window.kilt.sporran.signWithDid(msg);
+    console.log(result);
+    didLoginMsg.setSignature(result.signature);
+    const did = result.didKeyUri.split('#')[0];
+    
+    const req = new LoginRequest();
+    req.setExternalId(did);
+    req.setDidLogin(didLoginMsg);
+    
+    const loginResponse = await this.authClient.login(req, {});
+
+    if (this.refreshWorker !== null) {
+      clearInterval(this.refreshWorker);
+      this.refreshWorker = null;
+    }
+
+    this.accessToken = loginResponse.getAccessToken();
+    this.refreshToken = loginResponse.getRefreshToken();
+    this.refreshWorker = setInterval(this.refresh, 1000 * 60);
+
+    const userReq = new GetUserRequest();
+    userReq.setExternalId(did);
+    let metadata = { "Authorization": "Bearer " + this.accessToken };
+    let user = await this.userClient.get(userReq, metadata);
+    this.setState({ name: user.getName() });
   }
 
   setTodoState = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +183,7 @@ class App extends React.Component {
         subject: subject,
         description: description,
         status: "active",
-        createdAt: moment(res.getCreatedAt().toDate()).fromNow(),
+        createdAt: moment(res.getCreatedAt()?.toDate()).fromNow(),
       };
       this.setState({
         todos: [todo, ...this.state.todos],
@@ -162,7 +205,7 @@ class App extends React.Component {
       console.log(res.getId(), JSON.parse(res.getData()));
       let todo = JSON.parse(res.getData());
       todo.id = res.getId();
-      todo.createdAt = moment(res.getCreatedAt().toDate()).fromNow();
+      todo.createdAt = moment(res.getCreatedAt()?.toDate()).fromNow();
       this.setState({
         todos: [...this.state.todos, todo],
       });
@@ -182,9 +225,26 @@ class App extends React.Component {
             <IconButton edge="start"  color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" >
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Todo App
             </Typography>
+            {/* show the name if the user is logged in on the right */}
+            {this.state.name && (
+              <div>
+                <IconButton
+                  size="medium"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Typography variant="h6" >
+                  {this.state.name}
+                </Typography>
+              </div>
+            )}
           </Toolbar>
         </AppBar>
         <header>

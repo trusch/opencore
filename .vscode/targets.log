@@ -1,0 +1,698 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Mon Jun 20 10:38:30 2022
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c17a6e62-4296-4810-ab94-94bab958f38e.sock
+# environment
+VSCODE_CWD = /home/trusch
+# environment
+CLOUDSDK_ROOT_DIR = /opt/google-cloud-sdk
+# makefile (from 'Makefile', line 9)
+MOLD = /mold/mold -run
+# environment
+NVM_DIR = /home/trusch/.nvm
+# environment
+GDM_LANG = en_US.UTF-8
+# default
+MAKE_COMMAND := make
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/trusch/Code/opencore
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+MAIL = /var/spool/mail/trusch
+# environment
+XDG_DATA_DIRS = /home/trusch/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
+# environment
+OLDPWD = /home/trusch
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+NVM_INC = /home/trusch/.nvm/versions/node/v16.13.2/include/node
+# environment
+VSCODE_CODE_CACHE_PATH = /home/trusch/.config/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.NPJEO1
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# makefile
+MAKEFLAGS = pqrR
+# makefile
+CURDIR := /home/trusch/Code/opencore
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+BINARYEN_ROOT = /usr
+# makefile (from 'Makefile', line 1)
+IMAGE = containers.trusch.io/opencore/core:latest
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+NVM_BIN = /home/trusch/.nvm/versions/node/v16.13.2/bin
+# environment
+CLOUDSDK_PYTHON = /usr/bin/python
+# environment
+WAYLAND_DISPLAY = wayland-0
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = gnome
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+ZSH = /home/trusch/.oh-my-zsh
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 54368
+# makefile (from 'Makefile', line 2)
+BASE_IMAGE = gcr.io/distroless/cc-debian11:latest
+# environment
+XDG_SESSION_TYPE = wayland
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+SESSION_MANAGER = local/buddy:@/tmp/.ICE-unix/1688,unix/buddy:/tmp/.ICE-unix/1688
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# makefile (from 'Makefile', line 38)
+DOCKER = docker
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+ANDROID_SDK_ROOT = /opt/android-sdk
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+ANDROID_HOME = /opt/android-sdk
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
+SHLVL = 0
+# environment
+GOOGLE_CLOUD_SDK_HOME = /opt/google-cloud-sdk
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /home/trusch/.nvm/versions/node/v16.13.2/bin:/home/trusch/bin:/home/trusch/go/bin:/home/trusch/.cargo/bin:/opt/google-cloud-sdk/bin:/opt/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin
+# default
+MAKEFILES := 
+# environment
+MOTD_SHOWN = pam
+# automatic
+^F = $(notdir $^)
+# environment
+INVOCATION_ID = a3e69654ad534931823c092fd22dac47
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+USERNAME = trusch
+# environment
+GNOME_SETUP_DISPLAY = :1
+# automatic
+?F = $(notdir $?)
+# environment
+XDG_CURRENT_DESKTOP = GNOME
+# environment
+LS_COLORS = 
+# automatic
++F = $(notdir $+)
+# environment
+LESS = -R
+# environment
+DESKTOP_SESSION = gnome
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = GNOME
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = trusch
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/vscode.desktop
+# makefile
+.DEFAULT_GOAL := image
+# environment
+SYSTEMD_EXEC_PID = 1702
+# environment
+EDITOR = emacsclient
+# environment
+DISPLAY = :0
+# environment
+USER = trusch
+# default
+MAKE_VERSION := 4.3
+# 'override' directive
+.SHELLSTATUS := 0
+# environment
+MANAGERPID = 1592
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 54368
+# makefile (from 'Makefile', line 4)
+BUILD_BASE_IMAGE = docker.io/library/rust:1.60-bullseye
+# environment
+PAGER = less
+# environment
+_ = /usr/bin/make
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+LC_CTYPE = 
+# environment
+NVM_CD_FLAGS = -q
+# environment
+JOURNAL_STREAM = 8:22185
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/trusch
+# environment
+QT_IM_MODULE = ibus
+# environment
+CLOUDSDK_PYTHON_ARGS = -S
+# makefile (from 'Makefile', line 5)
+DB_VOLUME = --tmpfs=/var/lib/postgresql/data
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d3578ee0-1.67.1-main.sock
+# makefile (from 'Makefile', line 3)
+BUILD_IMAGE = containers.trusch.io/opencore/builder
+# makefile (from 'Makefile', line 68)
+DB_VOLUME_NAME = "opencore-data"
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+GDMSESSION = gnome
+# variable set hash-table stats:
+# Load=120/1024=12%, Rehash=0, Collisions=6/166=4%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 40, inode 5891830): 21 files, no impossibilities.
+
+# 21 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-adece5a41d701949/out/op.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/groups.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-adece5a41d701949/out/tests.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-17 15:37:45.606110553
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/auth.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/users.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/token/mod.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/permissions.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/resources.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+build.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/locks.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+stop:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 76):
+	podman pod rm -f opencore
+
+# Not a target:
+src/token/context.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/lib.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-adece5a41d701949/out/consts.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.image: bin/opencore Makefile
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 19):
+	$(eval ID=$(shell buildah from $(BASE_IMAGE)))
+	buildah copy $(ID) bin/opencore /bin/opencore
+	buildah config --user 3001:3001 $(ID) 
+	buildah config --cmd "/bin/opencore" $(ID) 
+	buildah commit $(ID) $(IMAGE)
+	buildah rm $(ID)
+	touch .image
+
+# Not a target:
+src/services/base.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/schemas.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/token/claims.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/users.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/token/validator.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/schemas.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+run: .image
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 44):
+	-podman pod kill opencore
+	podman pod create --replace --name opencore \
+		-p 0.0.0.0:3001:3001 \
+		-p 0.0.0.0:3002:3002 \
+		-p 0.0.0.0:5432:5432 \
+		-p 6831:6831/udp \
+		-p 6832:6832/udp \
+		-p 16686:16686
+	podman run -d --pod opencore --name postgres \
+		-e POSTGRES_PASSWORD=password \
+		$(DB_VOLUME) \
+		docker.io/postgres:latest -c log_statement=all
+	podman run -d --pod opencore --name jaeger \
+		docker.io/jaegertracing/all-in-one:latest
+	podman run -d --pod opencore --name core \
+		-e RUST_LOG=info \
+		-e RUST_BACKTRACE=1 \
+		-v ./examples/todo-web-app/build:/static \
+		${IMAGE} /bin/opencore \
+			--listen 0.0.0.0:3001 \
+			--database "postgres://postgres:password@127.0.0.1" \
+			--secret secret \
+			--static-dir /static
+
+# Not a target:
+target/debug/build/opencore-904f0f12935ffc56/out/idp.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/events.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+proto/catalog.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/errors.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+image: .image
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/groups.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/events.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+bin/opencore: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto .build-image
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 14):
+	podman run -it --rm -v .:/app -w /app -v cargo-cache:/usr/local/cargo $(BUILD_IMAGE) $(MOLD) cargo build --release
+	mkdir -p bin
+	cp target/release/opencore bin/
+
+# Not a target:
+src/services/service_accounts.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/resources.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/mod.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/errors.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.build-image:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 28):
+	$(eval ID=$(shell buildah from $(BUILD_BASE_IMAGE)))
+	buildah run $(ID) -- rustup component add rustfmt
+	buildah run $(ID) -- git clone https://github.com/rui314/mold.git /mold
+	buildah run $(ID) -- apt update
+	buildah run $(ID) -- apt install -y build-essential clang lld cmake libxxhash-dev libssl-dev
+	buildah run $(ID) -- make -C /mold -j8
+	buildah commit $(ID) $(BUILD_IMAGE)
+	buildah rm $(ID)
+	touch .build-image
+
+# Not a target:
+target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/locks.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+docker-build: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 40):
+	$(DOCKER) build -t $(IMAGE) .
+	touch .image
+
+run-persistent:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 70):
+	$(MAKE) run DB_VOLUME="-v $(DB_VOLUME_NAME):/var/lib/postgresql/data"
+
+# Not a target:
+target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/mod.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+run-with-list-test-volume: .image
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 73):
+	$(MAKE) run-persistent DB_VOLUME_NAME="opencore-list-test"
+
+# Not a target:
+target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/services/permissions.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/main.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/managers/service_accounts.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+src/token/error.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+proto/idp.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=61/1024=6%, Rehash=0, Collisions=3/175=2%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 80 / storage = 2017 B / avg = 25 B
+# current buf: size = 8162 B / used = 2017 B / count = 80 / avg = 25 B
+
+# strcache performance: lookups = 150 / hit rate = 46%
+# hash-table stats:
+# Load=80/8192=1%, Rehash=0, Collisions=0/150=0%
+# Finished Make data base on Mon Jun 20 10:38:30 2022
+
+ 

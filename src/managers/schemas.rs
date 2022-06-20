@@ -33,6 +33,34 @@ impl Manager {
         Ok(res)
     }
 
+    pub async fn load_from_directory(&self, directory: &str) -> Result<(), Error> {
+        let mut files = std::fs::read_dir(directory)?;
+        while let Some(entry) = files.next() {
+            let entry = entry?;
+            let path = entry.path();
+            if path.is_file() {
+                let filename = path.file_name().unwrap().to_str().unwrap();
+                if filename.ends_with(".json") {
+                    let kind = filename.trim_end_matches(".json").to_string();
+                    let data = serde_json::from_str(&std::fs::read_to_string(&path)?)?;
+                    match self.create(&kind, &data).await {
+                        Ok(_) => info!("created schema {}", kind),
+                        Err(_) => {
+                            match self.get_by_kind(&kind).await {
+                                Ok(old) => {
+                                    self.update(&Uuid::parse_str(&old.id)?, &data).await?;
+                                },
+                                Err(e) => error!("failed to retrieve old schema {}: {}", kind, e),
+                            };
+                        },
+                    };
+                }
+            }
+        }
+
+        Ok(())
+    }
+
     #[tracing::instrument(name = "mgr::schemas::init_tables", skip(self))]
     async fn init_tables(&self) -> Result<(), Error> {
         sqlx::query(
@@ -52,7 +80,7 @@ impl Manager {
 
     #[tracing::instrument(name = "mgr::schemas::create", skip(self))]
     pub async fn create(&self, kind: &str, data: &serde_json::Value) -> Result<Schema, Error> {
-        let id = Uuid::new_v4();
+        let id = Uuid::from_bytes(uuid::Uuid::new_v4().into_bytes());
 
         let now = chrono::Utc::now();
 
@@ -104,6 +132,48 @@ impl Manager {
             "SELECT id, kind, created_at, updated_at, data FROM schemas WHERE id = $1",
         )
         .bind(id)
+        .fetch_one(self.pool.deref())
+        .await
+        {
+            Ok(row) => row,
+            Err(_) => {
+                return Err(Error::NotFound);
+            }
+        };
+
+        let data = match serde_json::to_string(&row.data) {
+            Ok(data) => data,
+            Err(err) => {
+                return Err(Error::Database(format!(
+                    "failed to encode schema data: {}",
+                    err
+                )));
+            }
+        };
+
+        let res = Schema {
+            id: row.id.to_hyphenated().to_string(),
+            kind: row.kind,
+            data,
+            created_at: Some(prost_types::Timestamp {
+                seconds: row.created_at.timestamp(),
+                nanos: 0,
+            }),
+            updated_at: Some(prost_types::Timestamp {
+                seconds: row.updated_at.timestamp(),
+                nanos: 0,
+            }),
+        };
+
+        Ok(res)
+    }
+
+    #[tracing::instrument(name = "mgr::schemas::get_by_kind", skip(self))]
+    pub async fn get_by_kind(&self, kind: &str) -> Result<Schema, Error> {
+        let row: SchemaRow = match sqlx::query_as(
+            "SELECT id, kind, created_at, updated_at, data FROM schemas WHERE kind = $1",
+        )
+        .bind(kind)
         .fetch_one(self.pool.deref())
         .await
         {

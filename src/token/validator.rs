@@ -4,9 +4,15 @@ use super::claims::Claims;
 use super::error::Error;
 use crate::token::context::Context;
 
-#[derive(Debug)]
+
 pub struct Validator {
-    decoding_key: DecodingKey<'static>,
+    decoding_key: DecodingKey,
+}
+
+impl std::fmt::Debug for Validator {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Validator()")
+    }
 }
 
 impl Validator {

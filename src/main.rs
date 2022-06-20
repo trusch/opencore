@@ -15,7 +15,7 @@ use std::net::ToSocketAddrs;
 use std::pin::Pin;
 use std::task::Poll;
 use tower::{Service, ServiceExt};
-use tower_http::cors::{any, CorsLayer};
+use tower_http::cors::{Any, CorsLayer};
 use tower_http::{services::ServeDir, trace::TraceLayer};
 
 #[macro_use]
@@ -39,6 +39,8 @@ struct Opts {
     allow_origins: Vec<String>,
     #[clap(long, default_value = ".")]
     static_dir: String,
+    #[clap(long, default_value = "")]
+    schema_dir: String,
 }
 
 lazy_static! {
@@ -181,6 +183,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let managers = ManagersContainer::new().await?;
 
+    if OPTS.schema_dir.len() > 0 {
+        info!("loading schemas from directory {}...", &OPTS.schema_dir);
+        managers.schemas.load_from_directory(&OPTS.schema_dir).await?;
+    }
+
     let services = ServicesContainer::new(&managers).await?;
 
     let reflection_service = tonic_reflection::server::Builder::configure()
@@ -190,17 +197,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     create_admin_service_account(managers.service_accounts.clone()).await?;
 
-    let grpc_web_config = tonic_web::config().allow_origins(vec![
-        OPTS.listen.clone(),
-        "http://127.0.0.1:8080".to_string(),
-        "http://127.0.0.1:3000".to_string(),
-        "http://127.0.0.1:3001".to_string(),
-        "http://127.0.0.1".to_string(),
-        "http://localhost:8080".to_string(),
-        "http://localhost:3000".to_string(),
-        "http://localhost:3001".to_string(),
-        "http://localhost".to_string(),
-    ]);
+    let grpc_web_config = tonic_web::config().allow_all_origins();
 
     let grpc_service = Server::builder()
         .accept_http1(true)
@@ -260,7 +257,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             ),
         )
         .layer(TraceLayer::new_for_http())
-        .layer(CorsLayer::new().allow_methods(any()).allow_origin(any()))
+        .layer(CorsLayer::new().allow_methods(Any).allow_origin(Any).allow_headers(Any))
         // Needed to unify errors types from Infallible to tonic's Box<dyn std::error::Error + Send + Sync>
         .map_err(|i| match i {});
 
@@ -287,6 +284,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 fn setup_tracing() -> Result<(), Box<dyn std::error::Error>> {
     use opentelemetry::global;
     use opentelemetry::sdk::trace::{self, IdGenerator, Sampler};
+    use tracing_opentelemetry::OpenTelemetryLayer;
 
     global::set_text_map_propagator(opentelemetry_jaeger::Propagator::new());
     let tracer = opentelemetry_jaeger::new_pipeline()
@@ -300,7 +298,8 @@ fn setup_tracing() -> Result<(), Box<dyn std::error::Error>> {
         )
         .install_batch(opentelemetry::runtime::Tokio)?;
 
-    let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+    
+    let telemetry = OpenTelemetryLayer::new(tracer);
 
     use tracing_subscriber::layer::SubscriberExt;
     use tracing_subscriber::EnvFilter;

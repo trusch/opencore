@@ -24,7 +24,7 @@ struct GroupRow {
 struct GroupMemberRow {
     id: Uuid,
     name: String,
-    email: String,
+    external_id: String,
     is_admin: bool,
     joined_at: chrono::DateTime<chrono::Utc>,
 }
@@ -72,7 +72,11 @@ impl Manager {
 
     #[tracing::instrument(name = "mgr::groups::create", skip(self))]
     pub async fn create(&self, claims: &token::Claims, name: &str) -> Result<Group, Status> {
-        let id = Uuid::new_v5(&Uuid::NAMESPACE_OID, name.as_bytes());
+        let id = Uuid::from_bytes(
+            uuid::Uuid::new_v5(&uuid::Uuid::NAMESPACE_OID, name.as_bytes()).into_bytes()
+        );
+        
+        
         let now = chrono::Utc::now();
 
         let requester_id = match Uuid::parse_str(&claims.sub) {
@@ -539,7 +543,7 @@ impl Manager {
         let group_id = *group_id;
 
         tokio::spawn(async move {
-            let mut rows = sqlx::query_as("SELECT id, name, email, group_members.is_admin, group_members.created_at AS joined_at FROM users LEFT JOIN group_members ON(users.id = group_members.user_id) WHERE group_members.group_id = $1")
+            let mut rows = sqlx::query_as("SELECT id, name, external_id, group_members.is_admin, group_members.created_at AS joined_at FROM users LEFT JOIN group_members ON(users.id = group_members.user_id) WHERE group_members.group_id = $1")
                 .bind(group_id)
                 .fetch(pool.deref());
             loop {
@@ -557,7 +561,7 @@ impl Manager {
                 let res = GroupMember {
                     user_id: row.id.to_hyphenated().to_string(),
                     user_name: row.name,
-                    user_email: row.email,
+                    user_external_id: row.external_id,
                     is_admin: row.is_admin,
                     joined_at: Some(prost_types::Timestamp {
                         seconds: row.joined_at.timestamp(),

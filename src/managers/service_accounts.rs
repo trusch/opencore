@@ -66,7 +66,12 @@ impl Manager {
             ));
         }
 
-        let id = Uuid::new_v5(&Uuid::NAMESPACE_OID, name.as_bytes());
+        let id = Uuid::from_bytes(
+            uuid::Uuid::new_v5(
+                &uuid::Uuid::NAMESPACE_OID,
+                name.as_bytes()
+            ).into_bytes()
+        );
 
         let now = chrono::Utc::now();
 

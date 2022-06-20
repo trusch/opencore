@@ -179,8 +179,9 @@ impl Manager {
             return Err(Error::Forbidden);
         }
 
-        let event_id = Uuid::new_v4();
-
+        let event_id = uuid::Uuid::new_v4();
+        let event_id = Uuid::from_bytes(event_id.into_bytes());
+        
         let now = chrono::Utc::now();
 
         let mut tx = self.pool.begin().await?;

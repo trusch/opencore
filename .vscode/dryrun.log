@@ -1,0 +1,23 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/trusch/Code/opencore'
+ 
+buildah run rust-working-container-12 -- rustup component add rustfmt
+buildah run rust-working-container-12 -- git clone https://github.com/rui314/mold.git /mold
+buildah run rust-working-container-12 -- apt update
+buildah run rust-working-container-12 -- apt install -y build-essential clang lld cmake libxxhash-dev libssl-dev
+buildah run rust-working-container-12 -- make -C /mold -j8
+buildah commit rust-working-container-12 containers.trusch.io/opencore/builder
+buildah rm rust-working-container-12
+touch .build-image
+podman run -it --rm -v .:/app -w /app -v cargo-cache:/usr/local/cargo containers.trusch.io/opencore/builder /mold/mold -run cargo build --release
+mkdir -p bin
+cp target/release/opencore bin/
+ 
+buildah copy cc-debian11-working-container-11 bin/opencore /bin/opencore
+buildah config --user 3001:3001 cc-debian11-working-container-11 
+buildah config --cmd "/bin/opencore" cc-debian11-working-container-11 
+buildah commit cc-debian11-working-container-11 containers.trusch.io/opencore/core:latest
+buildah rm cc-debian11-working-container-11
+touch .image
+make: Leaving directory '/home/trusch/Code/opencore'
+ 

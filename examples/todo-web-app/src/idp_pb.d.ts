@@ -11,8 +11,8 @@ export class User extends jspb.Message {
   getName(): string;
   setName(value: string): User;
 
-  getEmail(): string;
-  setEmail(value: string): User;
+  getExternalId(): string;
+  setExternalId(value: string): User;
 
   getIsAdmin(): boolean;
   setIsAdmin(value: boolean): User;
@@ -42,7 +42,7 @@ export namespace User {
   export type AsObject = {
     id: string,
     name: string,
-    email: string,
+    externalId: string,
     isAdmin: boolean,
     passwordHash: string,
     createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
@@ -54,8 +54,8 @@ export class CreateUserRequest extends jspb.Message {
   getName(): string;
   setName(value: string): CreateUserRequest;
 
-  getEmail(): string;
-  setEmail(value: string): CreateUserRequest;
+  getExternalId(): string;
+  setExternalId(value: string): CreateUserRequest;
 
   getPassword(): string;
   setPassword(value: string): CreateUserRequest;
@@ -74,7 +74,7 @@ export class CreateUserRequest extends jspb.Message {
 export namespace CreateUserRequest {
   export type AsObject = {
     name: string,
-    email: string,
+    externalId: string,
     password: string,
     isAdmin: boolean,
   }
@@ -84,8 +84,8 @@ export class GetUserRequest extends jspb.Message {
   getId(): string;
   setId(value: string): GetUserRequest;
 
-  getEmail(): string;
-  setEmail(value: string): GetUserRequest;
+  getExternalId(): string;
+  setExternalId(value: string): GetUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetUserRequest.AsObject;
@@ -98,7 +98,7 @@ export class GetUserRequest extends jspb.Message {
 export namespace GetUserRequest {
   export type AsObject = {
     id: string,
-    email: string,
+    externalId: string,
   }
 }
 
@@ -127,8 +127,8 @@ export class UpdateUserRequest extends jspb.Message {
   getName(): string;
   setName(value: string): UpdateUserRequest;
 
-  getEmail(): string;
-  setEmail(value: string): UpdateUserRequest;
+  getExternalId(): string;
+  setExternalId(value: string): UpdateUserRequest;
 
   getPassword(): string;
   setPassword(value: string): UpdateUserRequest;
@@ -145,7 +145,7 @@ export namespace UpdateUserRequest {
   export type AsObject = {
     id: string,
     name: string,
-    email: string,
+    externalId: string,
     password: string,
   }
 }
@@ -385,14 +385,19 @@ export namespace ListServiceAccountsRequest {
 }
 
 export class LoginRequest extends jspb.Message {
-  getEmail(): string;
-  setEmail(value: string): LoginRequest;
+  getExternalId(): string;
+  setExternalId(value: string): LoginRequest;
 
   getServiceAccountId(): string;
   setServiceAccountId(value: string): LoginRequest;
 
   getPassword(): string;
   setPassword(value: string): LoginRequest;
+
+  getDidLogin(): DidLogin | undefined;
+  setDidLogin(value?: DidLogin): LoginRequest;
+  hasDidLogin(): boolean;
+  clearDidLogin(): LoginRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginRequest.AsObject;
@@ -404,9 +409,32 @@ export class LoginRequest extends jspb.Message {
 
 export namespace LoginRequest {
   export type AsObject = {
-    email: string,
+    externalId: string,
     serviceAccountId: string,
     password: string,
+    didLogin?: DidLogin.AsObject,
+  }
+}
+
+export class DidLogin extends jspb.Message {
+  getMessage(): string;
+  setMessage(value: string): DidLogin;
+
+  getSignature(): string;
+  setSignature(value: string): DidLogin;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DidLogin.AsObject;
+  static toObject(includeInstance: boolean, msg: DidLogin): DidLogin.AsObject;
+  static serializeBinaryToWriter(message: DidLogin, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DidLogin;
+  static deserializeBinaryFromReader(message: DidLogin, reader: jspb.BinaryReader): DidLogin;
+}
+
+export namespace DidLogin {
+  export type AsObject = {
+    message: string,
+    signature: string,
   }
 }
 
@@ -637,8 +665,8 @@ export class GroupMember extends jspb.Message {
   getUserName(): string;
   setUserName(value: string): GroupMember;
 
-  getUserEmail(): string;
-  setUserEmail(value: string): GroupMember;
+  getUserExternalId(): string;
+  setUserExternalId(value: string): GroupMember;
 
   getIsAdmin(): boolean;
   setIsAdmin(value: boolean): GroupMember;
@@ -660,7 +688,7 @@ export namespace GroupMember {
   export type AsObject = {
     userId: string,
     userName: string,
-    userEmail: string,
+    userExternalId: string,
     isAdmin: boolean,
     joinedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
   }

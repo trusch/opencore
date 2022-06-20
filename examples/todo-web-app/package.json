@@ -13,18 +13,18 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "browser-list": "^4.16.5",
+    "glob-parent": "^5.1.2",
     "google-protobuf": "^3.18.0-rc.2",
     "grpc-web": "^1.2.1",
+    "immer": "^9.0.6",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1",
     "set-value": "^4.0.1",
-    "immer": "^9.0.6",
-    "glob-parent": "^5.1.2",
-    "browser-list": "^4.16.5"
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.6"
   }
 }

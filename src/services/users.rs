@@ -51,8 +51,8 @@ impl Users for Service {
         if r.name.is_empty() {
             return Err(Status::invalid_argument("'name' must be specified"));
         }
-        if r.email.is_empty() {
-            return Err(Status::invalid_argument("'email' must be specified"));
+        if r.external_id.is_empty() {
+            return Err(Status::invalid_argument("'external_id' must be specified"));
         }
         if r.password.len() < 8 {
             return Err(Status::invalid_argument(
@@ -62,20 +62,22 @@ impl Users for Service {
 
         let res = self
             .mgr
-            .create(&claims, &r.name, &r.email, &r.is_admin, &r.password)
+            .create(&claims, &r.name, &r.external_id, &r.is_admin, &r.password)
             .await?;
         Ok(Response::new(res))
     }
 
     #[tracing::instrument(name = "svc::users::get", skip(self))]
     async fn get(&self, request: Request<GetUserRequest>) -> Result<Response<User>, Status> {
+        let claims = self.validator.get_access_token_claims(&request)?;
+
         let r = request.get_ref();
         let selector = match () {
             _ if !r.id.is_empty() => {
                 let user_id = Self::parse_uuid(&request.get_ref().id)?;
                 managers::users::GetSelector::ById(user_id)
             }
-            _ if !r.email.is_empty() => managers::users::GetSelector::ByEmail(r.email.clone()),
+            _ if !r.external_id.is_empty() => managers::users::GetSelector::ByExternalId(r.external_id.clone()),
             _ => {
                 return Err(Status::invalid_argument(
                     "you need to supply 'id' or 'email'",
@@ -83,7 +85,7 @@ impl Users for Service {
             }
         };
 
-        let res = self.mgr.get(selector).await?;
+        let res = self.mgr.get(&claims, selector).await?;
 
         Ok(Response::new(res))
     }
@@ -125,7 +127,7 @@ impl Users for Service {
 
         let result = self
             .mgr
-            .update(&claims, &id, &r.name, &r.email, &r.password)
+            .update(&claims, &id, &r.name, &r.password)
             .await?;
         Ok(Response::new(result))
     }

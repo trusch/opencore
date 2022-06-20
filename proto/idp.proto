@@ -18,7 +18,7 @@ service Users {
 message User {
   string id = 1;
   string name = 2;
-  string email = 3;
+  string external_id = 3;
   bool is_admin = 4;
   string password_hash = 5;
   google.protobuf.Timestamp created_at = 6;
@@ -27,14 +27,14 @@ message User {
 
 message CreateUserRequest {
   string name = 1;
-  string email = 2;
+  string external_id = 2;
   string password = 3;
   bool is_admin = 4;
 }
 
 message GetUserRequest {
   string id = 1;
-  string email = 2;
+  string external_id = 2;
 }
 
 message DeleteUserRequest {
@@ -44,7 +44,7 @@ message DeleteUserRequest {
 message UpdateUserRequest {
   string id = 1;
   string name = 2;
-  string email = 3;
+  string external_id = 3;
   string password = 4;
 }
 
@@ -116,9 +116,15 @@ service Authentication {
 }
 
 message LoginRequest {
-  string email = 1;
+  string external_id = 1;
   string service_account_id = 2;
-  string password = 3;
+  string password = 3;  
+  DidLogin did_login = 4;
+}
+
+message DidLogin {
+  string message = 1;
+  string signature = 2;
 }
 
 message LoginResponse {
@@ -186,7 +192,7 @@ message DelUserFromGroupRequest {
 message GroupMember {
   string user_id = 1;
   string user_name = 2;
-  string user_email = 3;
+  string user_external_id = 3;
   bool is_admin = 4;
   google.protobuf.Timestamp joined_at = 5;
 

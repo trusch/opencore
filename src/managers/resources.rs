@@ -177,7 +177,7 @@ impl Manager {
     ) -> Result<Resource, Error> {
         self.schemas.validate(opts.kind, opts.data).await?;
 
-        let resource_id = Uuid::new_v4();
+        let resource_id = Uuid::from_bytes(uuid::Uuid::new_v4().into_bytes());
 
         let now = chrono::Utc::now();
 
@@ -251,7 +251,9 @@ impl Manager {
         for share in opts.shares.iter() {
             let principal_id = match Uuid::parse_str(&share.principal_id) {
                 Ok(val) => val,
-                Err(_) => Uuid::new_v5(&Uuid::NAMESPACE_OID, share.principal_id.as_bytes()), // service accounts may be specified by name
+                Err(_) => Uuid::from_bytes(
+                    uuid::Uuid::new_v5(&uuid::Uuid::NAMESPACE_OID, share.principal_id.as_bytes()).into_bytes()
+                ), // service accounts may be specified by name
             };
             self.permissions
                 .share_with_tx(
