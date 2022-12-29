@@ -196,6 +196,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()?;
 
     create_admin_service_account(managers.service_accounts.clone()).await?;
+    
+    create_default_groups(managers.groups.clone()).await?;
 
     let grpc_web_config = tonic_web::config().allow_all_origins();
 
@@ -329,6 +331,23 @@ async fn create_admin_service_account(
             println!("root service account already exists: {}.", err);
         }
     };
+    Ok(())
+}
+
+async fn create_default_groups(
+    group_mgr: Arc<managers::groups::Manager>,
+) -> Result<(), tonic::Status> {
+    let groups = vec!["all"];
+    for group in groups {
+        match group_mgr.create(&token::Claims::admin(), group).await {
+            Ok(_) => {
+                println!("Created group {}.", group);
+            }
+            Err(err) => {
+                println!("Group {} already exists: {}.", group, err);
+            }
+        };
+    }
     Ok(())
 }
 

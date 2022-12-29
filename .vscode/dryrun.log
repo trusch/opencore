@@ -1,23 +1,55 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/trusch/Code/opencore'
  
-buildah run rust-working-container-12 -- rustup component add rustfmt
-buildah run rust-working-container-12 -- git clone https://github.com/rui314/mold.git /mold
-buildah run rust-working-container-12 -- apt update
-buildah run rust-working-container-12 -- apt install -y build-essential clang lld cmake libxxhash-dev libssl-dev
-buildah run rust-working-container-12 -- make -C /mold -j8
-buildah commit rust-working-container-12 containers.trusch.io/opencore/builder
-buildah rm rust-working-container-12
+Trying to pull docker.io/library/rust:1.60-bullseye...
+
+Getting image source signatures
+Copying blob sha256:283a0d92cdf06eb32299bbf28f78c1618a6163731bcffbc1551510e57e8cb4b9
+Copying blob sha256:627e6c1e105548ea4a08354eea581f137cf368d91aeb0ad47dcb706fca54fd8b
+
+Copying blob sha256:5a8b0e20be4b4a332bc3d90b9903a5f3c0664b440fd9f1d2a1db0d4b7e6e826b
+Copying blob sha256:0670968926f6461e3135c82ba2c0ad3ebdedc0d0f41b18bda4a1e41104b8be8a
+Copying blob sha256:b0b10a3a2784b06bfe0af1493ea2a0fa957ae5e0dc30fcfd1166d2558ba74e4d
+Copying blob sha256:67e8aa6c8bbc76b1f2bccb3864b0887671833b8667dc1f6c965fcb0eac7e6402
+
+Copying config sha256:2a7fe322d8850b0f32d3cebd5ce588d5c1790c96b27d37aee48bddc124a80aa0
+
+Writing manifest to image destination
+
+Storing signatures
+
+buildah run rust-working-container-7 -- rustup component add rustfmt
+buildah run rust-working-container-7 -- git clone https://github.com/rui314/mold.git /mold
+buildah run rust-working-container-7 -- apt update
+buildah run rust-working-container-7 -- apt install -y build-essential clang lld cmake libxxhash-dev libssl-dev
+buildah run rust-working-container-7 -- make -C /mold -j8
+buildah commit rust-working-container-7 containers.trusch.io/opencore/builder
+buildah rm rust-working-container-7
 touch .build-image
+ 
 podman run -it --rm -v .:/app -w /app -v cargo-cache:/usr/local/cargo containers.trusch.io/opencore/builder /mold/mold -run cargo build --release
 mkdir -p bin
 cp target/release/opencore bin/
  
-buildah copy cc-debian11-working-container-11 bin/opencore /bin/opencore
-buildah config --user 3001:3001 cc-debian11-working-container-11 
-buildah config --cmd "/bin/opencore" cc-debian11-working-container-11 
-buildah commit cc-debian11-working-container-11 containers.trusch.io/opencore/core:latest
-buildah rm cc-debian11-working-container-11
+Trying to pull gcr.io/distroless/cc-debian11:latest...
+
+Getting image source signatures
+
+Copying blob sha256:a1f1879bb7de17d50f521ac7c19f3ed9779ded79f26461afb92124ddb1ee7e27
+Copying blob sha256:fc251a6e798157dc3b46fd265da72f39cd848e3f9f4a0b28587d1713b878deb9
+Copying blob sha256:fda4ba87f6fbeebb651625814b981d4100a98c224fef80d562fb33853500f40e
+
+Copying config sha256:7d62b76a133b357bbc8eca89d5aa845e8b807e31980789db995c851ca100a61c
+
+Writing manifest to image destination
+Storing signatures
+
+buildah copy cc-debian11-working-container bin/opencore /bin/opencore
+buildah config --user 3001:3001 cc-debian11-working-container 
+buildah config --cmd "/bin/opencore" cc-debian11-working-container 
+buildah commit cc-debian11-working-container containers.trusch.io/opencore/core:latest
+buildah rm cc-debian11-working-container
 touch .image
+ 
 make: Leaving directory '/home/trusch/Code/opencore'
  

@@ -1,17 +1,13 @@
 IMAGE=containers.trusch.io/opencore/core:latest
 BASE_IMAGE=gcr.io/distroless/cc-debian11:latest
 BUILD_IMAGE=containers.trusch.io/opencore/builder
-BUILD_BASE_IMAGE=docker.io/library/rust:1.60-bullseye
+BUILD_BASE_IMAGE=docker.io/library/rust:1.66-bullseye
 DB_VOLUME=--tmpfs=/var/lib/postgresql/data
-
-# use mold for faster linking
-# disable by setting MOLD=
-MOLD=/mold/mold -run
 
 image: .image
 
 bin/opencore: $(shell find ./ -name "*.rs") $(shell find ./ -name "*.proto") .build-image
-	podman run -it --rm -v .:/app -w /app -v cargo-cache:/usr/local/cargo $(BUILD_IMAGE) $(MOLD) cargo build --release
+	podman run -it --rm -v .:/app -w /app -v cargo-cache:/usr/local/cargo $(BUILD_IMAGE) cargo build --release
 	mkdir -p bin
 	cp target/release/opencore bin/
 
@@ -24,13 +20,11 @@ bin/opencore: $(shell find ./ -name "*.rs") $(shell find ./ -name "*.proto") .bu
 	buildah rm $(ID)
 	touch .image
 
-.build-image:
+.build-image: Makefile
 	$(eval ID=$(shell buildah from $(BUILD_BASE_IMAGE)))
 	buildah run $(ID) -- rustup component add rustfmt
-	buildah run $(ID) -- git clone https://github.com/rui314/mold.git /mold
 	buildah run $(ID) -- apt update
 	buildah run $(ID) -- apt install -y build-essential clang lld cmake libxxhash-dev libssl-dev
-	buildah run $(ID) -- make -C /mold -j8
 	buildah commit $(ID) $(BUILD_IMAGE)
 	buildah rm $(ID)
 	touch .build-image

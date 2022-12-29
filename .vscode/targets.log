@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jun 20 10:38:30 2022
+# Make data base, printed on Thu Dec 29 12:52:19 2022
 
 # Variables
 
@@ -21,9 +21,9 @@ NO_AT_BRIDGE = 1
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c17a6e62-4296-4810-ab94-94bab958f38e.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-19628d93-485b-4f86-9115-76bbc9ca1ea6.sock
 # environment
-VSCODE_CWD = /home/trusch
+VSCODE_CWD = /home/trusch/Code/opencore
 # environment
 CLOUDSDK_ROOT_DIR = /opt/google-cloud-sdk
 # makefile (from 'Makefile', line 9)
@@ -34,6 +34,8 @@ NVM_DIR = /home/trusch/.nvm
 GDM_LANG = en_US.UTF-8
 # default
 MAKE_COMMAND := make
+# environment
+VSCODE_GIT_ASKPASS_EXTRA_ARGS = --ms-enable-electron-run-as-node
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
@@ -51,7 +53,7 @@ MAIL = /var/spool/mail/trusch
 # environment
 XDG_DATA_DIRS = /home/trusch/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
 # environment
-OLDPWD = /home/trusch
+OLDPWD = /home/trusch/Code
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -61,11 +63,11 @@ VSCODE_LOG_STACK = false
 # environment
 NVM_INC = /home/trusch/.nvm/versions/node/v16.13.2/include/node
 # environment
-VSCODE_CODE_CACHE_PATH = /home/trusch/.config/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CODE_CACHE_PATH = /home/trusch/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.NPJEO1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.45PRX1
 # default
 .LOADED := 
 # default
@@ -77,7 +79,7 @@ CURDIR := /home/trusch/Code/opencore
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -99,6 +101,8 @@ WAYLAND_DISPLAY = wayland-0
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
+GIT_ASKPASS = /opt/VSCode-linux-x64/resources/app/extensions/git/dist/askpass.sh
+# environment
 XDG_SESSION_DESKTOP = gnome
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST := Makefile
@@ -109,7 +113,7 @@ ZSH = /home/trusch/.oh-my-zsh
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 54368
+VSCODE_PID = 8498
 # makefile (from 'Makefile', line 2)
 BASE_IMAGE = gcr.io/distroless/cc-debian11:latest
 # environment
@@ -117,7 +121,7 @@ XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/buddy:@/tmp/.ICE-unix/1688,unix/buddy:/tmp/.ICE-unix/1688
+SESSION_MANAGER = local/buddy:@/tmp/.ICE-unix/1788,unix/buddy:/tmp/.ICE-unix/1788
 # automatic
 *F = $(notdir $*)
 # environment
@@ -145,7 +149,7 @@ XMODIFIERS = @im=ibus
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
-SHLVL = 0
+SHLVL = 1
 # environment
 GOOGLE_CLOUD_SDK_HOME = /opt/google-cloud-sdk
 # environment
@@ -153,19 +157,27 @@ MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = /home/trusch/.nvm/versions/node/v16.13.2/bin:/home/trusch/bin:/home/trusch/go/bin:/home/trusch/.cargo/bin:/opt/google-cloud-sdk/bin:/opt/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin
+PATH = /home/trusch/bin:/home/trusch/go/bin:/home/trusch/.cargo/bin:/home/trusch/.nvm/versions/node/v16.13.2/bin:/home/trusch/bin:/home/trusch/go/bin:/home/trusch/.cargo/bin:/opt/google-cloud-sdk/bin:/opt/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin
 # default
 MAKEFILES := 
+# environment
+VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-07f74d838e.sock
+# environment
+VSCODE_GIT_ASKPASS_NODE = /opt/VSCode-linux-x64/code
 # environment
 MOTD_SHOWN = pam
 # automatic
 ^F = $(notdir $^)
 # environment
-INVOCATION_ID = a3e69654ad534931823c092fd22dac47
+VSCODE_GIT_ASKPASS_MAIN = /opt/VSCode-linux-x64/resources/app/extensions/git/dist/askpass-main.js
+# environment
+INVOCATION_ID = e481d5f1d4234fd4ba86be4173cdfac9
 # environment
 VSCODE_LOG_NATIVE = false
 # environment
 USERNAME = trusch
+# environment
+TERM_PROGRAM = vscode
 # environment
 GNOME_SETUP_DISPLAY = :1
 # automatic
@@ -173,7 +185,7 @@ GNOME_SETUP_DISPLAY = :1
 # environment
 XDG_CURRENT_DESKTOP = GNOME
 # environment
-LS_COLORS = 
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:
 # automatic
 +F = $(notdir $+)
 # environment
@@ -191,7 +203,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/vscode.desktop
 # makefile
 .DEFAULT_GOAL := image
 # environment
-SYSTEMD_EXEC_PID = 1702
+SYSTEMD_EXEC_PID = 1821
 # environment
 EDITOR = emacsclient
 # environment
@@ -203,11 +215,13 @@ MAKE_VERSION := 4.3
 # 'override' directive
 .SHELLSTATUS := 0
 # environment
-MANAGERPID = 1592
+MANAGERPID = 1666
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 54368
+DEBUGINFOD_URLS = https://debuginfod.archlinux.org 
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 8498
 # makefile (from 'Makefile', line 4)
-BUILD_BASE_IMAGE = docker.io/library/rust:1.60-bullseye
+BUILD_BASE_IMAGE = docker.io/library/rust:1.66-bullseye
 # environment
 PAGER = less
 # environment
@@ -215,11 +229,13 @@ _ = /usr/bin/make
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
+COLORTERM = truecolor
+# environment
 LC_CTYPE = 
 # environment
 NVM_CD_FLAGS = -q
 # environment
-JOURNAL_STREAM = 8:22185
+JOURNAL_STREAM = 8:27728
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -235,7 +251,9 @@ DB_VOLUME = --tmpfs=/var/lib/postgresql/data
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-d3578ee0-1.67.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d3578ee0-1.68.1-main.sock
+# environment
+TERM = xterm-256color
 # makefile (from 'Makefile', line 3)
 BUILD_IMAGE = containers.trusch.io/opencore/builder
 # makefile (from 'Makefile', line 68)
@@ -251,9 +269,11 @@ SUFFIXES :=
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
+TERM_PROGRAM_VERSION = 1.68.1
+# environment
 GDMSESSION = gnome
 # variable set hash-table stats:
-# Load=120/1024=12%, Rehash=0, Collisions=6/166=4%
+# Load=130/1024=13%, Rehash=0, Collisions=7/176=4%
 
 # Pattern-specific Variable Values
 
@@ -261,9 +281,9 @@ GDMSESSION = gnome
 
 # Directories
 
-# . (device 40, inode 5891830): 21 files, no impossibilities.
+# . (device 39, inode 5891830): 20 files, no impossibilities.
 
-# 21 files, no impossibilities in 1 directories.
+# 20 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -271,6 +291,19 @@ GDMSESSION = gnome
 
 # Files
 
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/wrappers.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/compiler/plugin.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+ 
 # Not a target:
 target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs:
 #  Implicit rule search has not been done.
@@ -284,7 +317,49 @@ target/debug/build/typenum-adece5a41d701949/out/op.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/tonic-reflection-677029cd2d84f2d2/out/grpc.reflection.v1alpha.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/struct.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const_gen.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/mime_guess-f42774292dc245be/out/mime_types_generated.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/managers/groups.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/mime_guess-dfbfa1e02a3a3331/out/mime_types_generated.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-9ac1d0db9aa5dcae/out/tests.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const_gen.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -296,7 +371,37 @@ target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/libsecp256k1-5dd76423666635b7/out/const_gen.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/ss58-registry-0a6e5d119da96c72/out/account_type_enum.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/libsecp256k1-5dd76423666635b7/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 target/debug/build/typenum-adece5a41d701949/out/tests.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/anyhow-dd70873b2c2883d8/out/probe.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/type.proto:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -304,12 +409,18 @@ target/debug/build/typenum-adece5a41d701949/out/tests.rs:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-17 15:37:45.606110553
+#  Last modified 2022-12-29 12:47:56.518789908
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-9ac1d0db9aa5dcae/out/op.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -321,7 +432,25 @@ src/services/auth.rs:
 #  File has not been updated.
 
 # Not a target:
+target/debug/build/opencore-c487c508ce2d831b/out/catalog.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-219566176f063fa5/out/op.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/managers/users.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-d857961f360541de/out/consts.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -339,7 +468,19 @@ src/managers/permissions.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/libsecp256k1-43aca7528eb67ecd/out/const_gen.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/services/resources.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/typenum-9ac1d0db9aa5dcae/out/consts.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -376,6 +517,12 @@ src/token/context.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/opencore-fd5661038f02bc8c/out/idp.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/lib.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -401,6 +548,12 @@ target/debug/build/typenum-adece5a41d701949/out/consts.rs:
 	touch .image
 
 # Not a target:
+target/release/build/opencore-fd5661038f02bc8c/out/catalog.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/services/base.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -419,7 +572,31 @@ target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/api.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-219566176f063fa5/out/tests.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/token/claims.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/opencore-fd5661038f02bc8c/out/google.protobuf.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/field_mask.proto:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -437,7 +614,55 @@ src/token/validator.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/ss58-registry-82e0a8b481d8f3dd/out/account_type_enum.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-219566176f063fa5/out/consts.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/descriptor.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/timestamp.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/managers/schemas.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/anyhow-35700147039635f6/out/probe.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/tonic-reflection-a808f2ed980e9d1e/out/grpc.reflection.v1alpha.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/num-bigint-ad8eccc346c388f5/out/radix_bases.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/duration.proto:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -485,6 +710,12 @@ run: .image
 			--static-dir /static
 
 # Not a target:
+target/debug/build/opencore-c487c508ce2d831b/out/google.protobuf.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 target/debug/build/opencore-904f0f12935ffc56/out/idp.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -509,12 +740,48 @@ src/services/errors.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/crunchy-97f7add14521e148/out/lib.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/crunchy-879f759bc1918bfd/out/lib.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 image: .image
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/anyhow-0fac7f148b4b9ce1/out/probe.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/num-bigint-b6ccf87e93c53fab/out/radix_bases.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -531,7 +798,7 @@ src/services/events.rs:
 #  Modification time never checked.
 #  File has not been updated.
 
-bin/opencore: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto .build-image
+bin/opencore: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs target/debug/build/opencore-c487c508ce2d831b/out/google.protobuf.rs target/debug/build/opencore-c487c508ce2d831b/out/catalog.rs target/debug/build/opencore-c487c508ce2d831b/out/idp.rs target/debug/build/mime_guess-f42774292dc245be/out/mime_types_generated.rs target/debug/build/anyhow-0fac7f148b4b9ce1/out/probe.rs target/debug/build/num-bigint-ad8eccc346c388f5/out/radix_bases.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/consts.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/tests.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/op.rs target/debug/build/crunchy-879f759bc1918bfd/out/lib.rs target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const.rs target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const_gen.rs target/debug/build/ss58-registry-0a6e5d119da96c72/out/account_type_enum.rs target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const.rs target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const_gen.rs target/debug/build/opencore-e84ef70ad3f17636/out/google.protobuf.rs target/debug/build/opencore-e84ef70ad3f17636/out/catalog.rs target/debug/build/opencore-e84ef70ad3f17636/out/idp.rs target/debug/build/tonic-reflection-a808f2ed980e9d1e/out/grpc.reflection.v1alpha.rs target/release/build/mime_guess-dfbfa1e02a3a3331/out/mime_types_generated.rs target/release/build/anyhow-35700147039635f6/out/probe.rs target/release/build/num-bigint-b6ccf87e93c53fab/out/radix_bases.rs target/release/build/typenum-d857961f360541de/out/consts.rs target/release/build/typenum-d857961f360541de/out/tests.rs target/release/build/typenum-d857961f360541de/out/op.rs target/release/build/crunchy-5681799800df16f8/out/lib.rs target/release/build/libsecp256k1-43aca7528eb67ecd/out/const.rs target/release/build/libsecp256k1-43aca7528eb67ecd/out/const_gen.rs target/release/build/crunchy-97f7add14521e148/out/lib.rs target/release/build/typenum-219566176f063fa5/out/consts.rs target/release/build/typenum-219566176f063fa5/out/tests.rs target/release/build/typenum-219566176f063fa5/out/op.rs target/release/build/ss58-registry-82e0a8b481d8f3dd/out/account_type_enum.rs target/release/build/libsecp256k1-5dd76423666635b7/out/const.rs target/release/build/libsecp256k1-5dd76423666635b7/out/const_gen.rs target/release/build/ss58-registry-bd7115caa1b57955/out/account_type_enum.rs target/release/build/anyhow-dd70873b2c2883d8/out/probe.rs target/release/build/opencore-fd5661038f02bc8c/out/catalog.rs target/release/build/opencore-fd5661038f02bc8c/out/google.protobuf.rs target/release/build/opencore-fd5661038f02bc8c/out/idp.rs target/release/build/tonic-reflection-677029cd2d84f2d2/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/compiler/plugin.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/any.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/api.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/descriptor.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/duration.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/empty.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/field_mask.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/source_context.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/struct.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/timestamp.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/type.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/wrappers.proto .build-image
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -576,6 +843,18 @@ src/managers/errors.rs:
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+target/debug/build/opencore-e84ef70ad3f17636/out/google.protobuf.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/debug/build/opencore-e84ef70ad3f17636/out/idp.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 .build-image:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -598,6 +877,12 @@ target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/empty.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/services/locks.rs:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -609,13 +894,25 @@ target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs:
 #  Modification time never checked.
 #  File has not been updated.
 
-docker-build: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto
+# Not a target:
+target/debug/build/opencore-c487c508ce2d831b/out/idp.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+docker-build: build.rs src/lib.rs src/main.rs src/managers/errors.rs src/managers/events.rs src/managers/groups.rs src/managers/locks.rs src/managers/mod.rs src/managers/permissions.rs src/managers/resources.rs src/managers/schemas.rs src/managers/service_accounts.rs src/managers/users.rs src/services/auth.rs src/services/base.rs src/services/errors.rs src/services/events.rs src/services/groups.rs src/services/locks.rs src/services/mod.rs src/services/permissions.rs src/services/resources.rs src/services/schemas.rs src/services/service_accounts.rs src/services/users.rs src/token/claims.rs src/token/context.rs src/token/error.rs src/token/mod.rs src/token/validator.rs target/debug/build/mime_guess-f6cc2de543f41d36/out/mime_types_generated.rs target/debug/build/anyhow-cd4ffac6e1de0d7c/out/probe.rs target/debug/build/num-bigint-410ecf9716de415f/out/radix_bases.rs target/debug/build/typenum-adece5a41d701949/out/consts.rs target/debug/build/typenum-adece5a41d701949/out/tests.rs target/debug/build/typenum-adece5a41d701949/out/op.rs target/debug/build/crunchy-016682b5b4a719d7/out/lib.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const.rs target/debug/build/libsecp256k1-daffbd507dd1e7bf/out/const_gen.rs target/debug/build/ss58-registry-57e4c6443400cae4/out/account_type_enum.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const.rs target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs target/debug/build/opencore-904f0f12935ffc56/out/google.protobuf.rs target/debug/build/opencore-904f0f12935ffc56/out/catalog.rs target/debug/build/opencore-904f0f12935ffc56/out/idp.rs target/debug/build/tonic-reflection-3455caf6d0df0eaf/out/grpc.reflection.v1alpha.rs target/debug/build/opencore-c487c508ce2d831b/out/google.protobuf.rs target/debug/build/opencore-c487c508ce2d831b/out/catalog.rs target/debug/build/opencore-c487c508ce2d831b/out/idp.rs target/debug/build/mime_guess-f42774292dc245be/out/mime_types_generated.rs target/debug/build/anyhow-0fac7f148b4b9ce1/out/probe.rs target/debug/build/num-bigint-ad8eccc346c388f5/out/radix_bases.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/consts.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/tests.rs target/debug/build/typenum-9ac1d0db9aa5dcae/out/op.rs target/debug/build/crunchy-879f759bc1918bfd/out/lib.rs target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const.rs target/debug/build/libsecp256k1-5938fb17bf97bec2/out/const_gen.rs target/debug/build/ss58-registry-0a6e5d119da96c72/out/account_type_enum.rs target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const.rs target/debug/build/libsecp256k1-d3fa6be86fc9c5cc/out/const_gen.rs target/debug/build/opencore-e84ef70ad3f17636/out/google.protobuf.rs target/debug/build/opencore-e84ef70ad3f17636/out/catalog.rs target/debug/build/opencore-e84ef70ad3f17636/out/idp.rs target/debug/build/tonic-reflection-a808f2ed980e9d1e/out/grpc.reflection.v1alpha.rs target/release/build/mime_guess-dfbfa1e02a3a3331/out/mime_types_generated.rs target/release/build/anyhow-35700147039635f6/out/probe.rs target/release/build/num-bigint-b6ccf87e93c53fab/out/radix_bases.rs target/release/build/typenum-d857961f360541de/out/consts.rs target/release/build/typenum-d857961f360541de/out/tests.rs target/release/build/typenum-d857961f360541de/out/op.rs target/release/build/crunchy-5681799800df16f8/out/lib.rs target/release/build/libsecp256k1-43aca7528eb67ecd/out/const.rs target/release/build/libsecp256k1-43aca7528eb67ecd/out/const_gen.rs target/release/build/crunchy-97f7add14521e148/out/lib.rs target/release/build/typenum-219566176f063fa5/out/consts.rs target/release/build/typenum-219566176f063fa5/out/tests.rs target/release/build/typenum-219566176f063fa5/out/op.rs target/release/build/ss58-registry-82e0a8b481d8f3dd/out/account_type_enum.rs target/release/build/libsecp256k1-5dd76423666635b7/out/const.rs target/release/build/libsecp256k1-5dd76423666635b7/out/const_gen.rs target/release/build/ss58-registry-bd7115caa1b57955/out/account_type_enum.rs target/release/build/anyhow-dd70873b2c2883d8/out/probe.rs target/release/build/opencore-fd5661038f02bc8c/out/catalog.rs target/release/build/opencore-fd5661038f02bc8c/out/google.protobuf.rs target/release/build/opencore-fd5661038f02bc8c/out/idp.rs target/release/build/tonic-reflection-677029cd2d84f2d2/out/grpc.reflection.v1alpha.rs proto/catalog.proto proto/idp.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/compiler/plugin.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/any.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/api.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/descriptor.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/duration.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/empty.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/field_mask.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/source_context.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/struct.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/timestamp.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/type.proto target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/wrappers.proto
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 40):
 	$(DOCKER) build -t $(IMAGE) .
 	touch .image
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/any.proto:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 run-persistent:
 #  Implicit rule search has not been done.
@@ -636,6 +933,12 @@ src/services/mod.rs:
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+target/release/build/crunchy-5681799800df16f8/out/lib.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 run-with-list-test-volume: .image
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -650,7 +953,37 @@ target/debug/build/libsecp256k1-0e0ebee8a296f104/out/const_gen.rs:
 #  File has not been updated.
 
 # Not a target:
+target/release/build/libsecp256k1-43aca7528eb67ecd/out/const.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-d857961f360541de/out/tests.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 src/services/permissions.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/typenum-d857961f360541de/out/op.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/ss58-registry-bd7115caa1b57955/out/account_type_enum.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+target/release/build/prost-build-0fad80e0de08558c/out/include/google/protobuf/source_context.proto:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -674,25 +1007,32 @@ src/token/error.rs:
 #  File has not been updated.
 
 # Not a target:
+target/debug/build/opencore-e84ef70ad3f17636/out/catalog.rs:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 proto/idp.proto:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=61/1024=6%, Rehash=0, Collisions=3/175=2%
+# Load=114/1024=11%, Rehash=0, Collisions=16/334=5%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 80 / storage = 2017 B / avg = 25 B
-# current buf: size = 8162 B / used = 2017 B / count = 80 / avg = 25 B
+# strcache buffers: 1 (0) / strings = 133 / storage = 5755 B / avg = 43 B
+# current buf: size = 8162 B / used = 5755 B / count = 133 / avg = 43 B
 
-# strcache performance: lookups = 150 / hit rate = 46%
+# strcache performance: lookups = 255 / hit rate = 47%
 # hash-table stats:
-# Load=80/8192=1%, Rehash=0, Collisions=0/150=0%
-# Finished Make data base on Mon Jun 20 10:38:30 2022
+ 
+# Load=133/8192=2%, Rehash=0, Collisions=0/255=0%
+# Finished Make data base on Thu Dec 29 12:52:19 2022
 
  

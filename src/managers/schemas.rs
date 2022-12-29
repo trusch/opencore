@@ -35,7 +35,7 @@ impl Manager {
 
     pub async fn load_from_directory(&self, directory: &str) -> Result<(), Error> {
         let mut files = std::fs::read_dir(directory)?;
-        while let Some(entry) = files.next() {
+        for entry in files.by_ref() {
             let entry = entry?;
             let path = entry.path();
             if path.is_file() {
@@ -49,6 +49,7 @@ impl Manager {
                             match self.get_by_kind(&kind).await {
                                 Ok(old) => {
                                     self.update(&Uuid::parse_str(&old.id)?, &data).await?;
+                                    info!("updated schema {}", kind);
                                 },
                                 Err(e) => error!("failed to retrieve old schema {}: {}", kind, e),
                             };
